@@ -1,7 +1,12 @@
+import java.util.ArrayList;
+import java.util.List;
 public class ArvoreAVL extends ABP {
     private Object elemento;
-    public ArvoreAVL() {
-        super(Object null);
+    public List<No> nos = new ArrayList<No>();
+
+    public ArvoreAVL(Object elemento) {
+        super(elemento);
+        setRaiz(new No(elemento));
     }
     public void inserir(Object elemento) throws NoInvalidoExcecao {
         if (estaVazia()) {
@@ -15,7 +20,7 @@ public class ArvoreAVL extends ABP {
                 if (temDireito(tmp)) {
                     tmp.getFilhoDireito().setPai(novoNo);
                     if ((int) tmp.getFilhoDireito().getElemento() > (int) elemento) {
-                        novoNo.setFilhoDireito(tmp.getFilhoDireito())
+                        novoNo.setFilhoDireito(tmp.getFilhoDireito());
                     } else {
                         novoNo.setFilhoEsquerdo(tmp.getFilhoDireito());
                     }
@@ -42,8 +47,45 @@ public class ArvoreAVL extends ABP {
         }
     }
 
-    public void remover(Object elemento) throws NoInvalidoExcecao{
-
+    public void remover(Object elemento) throws NoInvalidoExcecao {
+        No tmp = busca(elemento, raiz());
+        No noPai = tmp.getPai();
+        boolean ehFilhoEsquerdo = ehFilhoEsquerdo(tmp);
+        if (elemento != tmp.getElemento()) {
+            throw new NoInvalidoExcecao("Elemento não existe!");
+        }
+        if (externo(tmp)) {
+            if (tmp.getPai().getFilhoEsquerdo() == tmp) {
+                tmp.getPai().setFilhoEsquerdo(null);
+            } else {
+                tmp.getPai().setFilhoDireito(null);
+            }
+            atualizaFatorBalanceamento(noPai, ehFilhoEsquerdo, 2);
+        }
+        else if(tmp.getFilhoDireito() == null){
+            if(tmp.getPai().getFilhoDireito() == tmp){
+                tmp.getPai().setFilhoDireito(tmp.getFilhoEsquerdo());
+                tmp.getFilhoEsquerdo().setPai(tmp.getPai());
+                atualizaFatorBalanceamento(noPai, ehFilhoEsquerdo, 2);
+            }
+            else{
+                tmp.getPai().setFilhoEsquerdo(tmp.getFilhoDireito());
+                tmp.getFilhoDireito().setPai(tmp.getPai());
+                atualizaFatorBalanceamento(noPai, ehFilhoEsquerdo, 2);
+            }
+        }
+        else{
+            No minimo = tmp;
+            minimo = tmp.getFilhoDireito();
+            No pai = minimo.getPai();
+            ehFilhoEsquerdo = ehFilhoEsquerdo(minimo);
+            while(minimo.getFilhoEsquerdo() != null){
+                minimo = minimo.getFilhoEsquerdo();
+            }
+            remover(minimo.getElemento());
+            tmp.setElemento(minimo.getElemento());
+            atualizaFatorBalanceamento(pai, ehFilhoEsquerdo, 2);
+        }
     }
     
 
@@ -178,7 +220,7 @@ public class ArvoreAVL extends ABP {
         }
         //Atualizando fator balanceamento
         no.setFatorBalanceamento((no.getFatorBalanceamento()-1) - Math.max(no.getFatorBalanceamento(), 0));
-        novoNo.setFatorBalanceamento((novoNo.getFatorBalanceamento() -1) + Math.min(no.getFatorBalanceamento(), 0);
+        novoNo.setFatorBalanceamento((novoNo.getFatorBalanceamento() -1) + Math.min(no.getFatorBalanceamento(), 0));
         if(estirpe(no)){
             setRaiz(novoNo);
         }
@@ -191,5 +233,39 @@ public class ArvoreAVL extends ABP {
     public boolean ehFIlhoDireito(No no){
         return no.getPai().getFilhoDireito() == no;
     }
-}
+    public void edificador(No no) {
+        if (no.getFilhoEsquerdo() != null) {
+            edificador(no.getFilhoEsquerdo());
+        }
+        nos.add(no);
+        if (no.getFilhoDireito() != null) {
+            edificador(no.getFilhoDireito());
+        }
+    }
+    public int alturaTotal(No no){
+        if(no == null){
+            return -1;
+        }
+        else{
+            return 1 + Math.max(alturaTotal(no.getFilhoEsquerdo()), alturaTotal(no.getFilhoDireito()));
+        }
+    }
 
+    public void imprimirArvore(){
+        edificador(raiz());
+        int altura = alturaTotal(raiz());
+        System.out.println("Árvore AVL de pesquisa binária");
+        for(int i = 0 ; i <= altura ; i++){
+            for(int j = 0 ; j < nos.size() ; j++){
+                if(profundidade(nos.get(j)) == i){
+                    System.out.print("\t"+nos.get(j).getElemento() + "[" + nos.get(j).getFatorBalanceamento() + "]");
+            }
+            else{
+                System.out.print("\t");
+                }
+        }
+        System.out.println();
+    }
+    nos.clear();
+    }
+}
