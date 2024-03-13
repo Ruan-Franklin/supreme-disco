@@ -114,7 +114,7 @@ public class ArvoreAVL extends ABP {
             if (no.getFatorBalanceamento() <= 2){
                 No subArvoreDireita = no.getFilhoDireito();
                 //Rotação simples à esquerda
-                if (subArvoreDireita.getFatorBalanceamento() <= 0){
+                if (subArvoreDireita != null && subArvoreDireita.getFilhoDireito() != null && subArvoreDireita.getFilhoDireito().getFatorBalanceamento() <= 0) {
                     rotacaoSimplesEsquerda(no);
                 }
                 //Rotação dupla à esquerda
@@ -151,79 +151,78 @@ public class ArvoreAVL extends ABP {
             atualizaFatorBalanceamento(pai(no), ehFilhoEsquerdo(no), 2);
         }
     }
-    public void rotacaoSimplesEsquerda(No no){
-        No novoNo = no.getFilhoDireito();
-        if(temEsquerdo(novoNo)){
-            no.setFilhoDireito(novoNo.getFilhoEsquerdo());
-            novoNo.getFilhoEsquerdo().setPai(no);
-            novoNo.setFilhoEsquerdo(no);
-            if(no != raiz()){
-                if (no == no.getPai().getFilhoEsquerdo()){
-                    no.getPai().setFilhoEsquerdo(novoNo);
+    public void rotacaoSimplesEsquerda(No no) {
+        if (no != null) {
+            No novoNo = no.getFilhoDireito();
+
+            if (novoNo != null && temEsquerdo(novoNo)) {
+                No filhoEsquerdo = novoNo.getFilhoEsquerdo();
+                no.setFilhoDireito(filhoEsquerdo);
+                if (filhoEsquerdo != null) {
+                    filhoEsquerdo.setPai(no);
                 }
-                else{
-                    no.getPai().setFilhoDireito(novoNo);
+                if (no != raiz()) {
+                    if (no == no.getPai().getFilhoEsquerdo()) {
+                        no.getPai().setFilhoEsquerdo(novoNo);
+                    } else {
+                        no.getPai().setFilhoDireito(novoNo);
+                    }
+                    novoNo.setPai(no.getPai());
                 }
-                novoNo.setPai(no.getPai());
+                no.setPai(novoNo);
+                novoNo.setFilhoEsquerdo(no);
+            } else {
+                System.out.println("Rotação simples à esquerda não é possível nesta configuração.");
             }
-            no.setPai(novoNo);
-        }
-        else{
-            novoNo.setFilhoEsquerdo(no);
-            if(no != raiz()){
-                if (no == no.getPai().getFilhoEsquerdo()) {
-                    no.getPai().setFilhoEsquerdo(novoNo);
-                }
-                else{
-                    no.getPai().setFilhoDireito(novoNo);
-                }
-                novoNo.setPai(no.getPai());
+
+            if (no != null && novoNo != null) {
+                no.setFatorBalanceamento(no.getFatorBalanceamento() + 1 - Math.min(novoNo.getFatorBalanceamento(), 0));
+                novoNo.setFatorBalanceamento(novoNo.getFatorBalanceamento() + 1 + Math.max(no.getFatorBalanceamento(), 0));
             }
-            no.setPai(novoNo);
-            no.setFilhoDireito(null);
-        }
-        no.setFatorBalanceamento(no.getFatorBalanceamento() +1 - Math.min(novoNo.getFatorBalanceamento(), 0));
-        novoNo.setFatorBalanceamento(novoNo.getFatorBalanceamento() +1 + Math.max(no.getFatorBalanceamento(), 0));
-        if (no == raiz()){
-            setRaiz(novoNo);
+
+            if (no == raiz()) {
+                setRaiz(novoNo);
+            }
         }
     }
 
-    public void rotacaoSimplesDireita(No no){
-        No novoNo = no.getFilhoEsquerdo();
-        if (temDireito(novoNo)){
-            no.setFilhoEsquerdo(novoNo.getFilhoDireito());
-            novoNo.getFilhoDireito().setPai(no);
-            novoNo.setFilhoDireito(no);
-            if(no != raiz()) {
-                if (no == no.getPai().getFilhoEsquerdo()) {
-                    no.getPai().setFilhoEsquerdo(novoNo);
-                } else {
-                    no.getPai().setFilhoDireito(novoNo);
 
+    public void rotacaoSimplesDireita(No no) {
+        if (no != null) {
+            No novoNo = no.getFilhoEsquerdo();
+            if (temDireito(novoNo)) {
+                no.setFilhoEsquerdo(novoNo.getFilhoDireito());
+                novoNo.getFilhoDireito().setPai(no);
+                novoNo.setFilhoDireito(no);
+                if (no != raiz()) {
+                    if (no == no.getPai().getFilhoEsquerdo()) {
+                        no.getPai().setFilhoEsquerdo(novoNo);
+                    } else {
+                        no.getPai().setFilhoDireito(novoNo);
+
+                    }
+                    novoNo.setPai(novoNo);
                 }
-                novoNo.setPai(novoNo);
+            } else {
+                novoNo.setFilhoDireito(no);
+                if (no != raiz()) {
+                    if (no == no.getPai().getFilhoEsquerdo()) {
+                        no.getPai().setFilhoEsquerdo(novoNo);
+                    } else {
+                        no.getPai().setFilhoDireito(novoNo);
+                    }
+                    novoNo.setPai(no.getPai());
+                    no.setFilhoEsquerdo(null);
+                }
+            }
+            //Atualizando fator balanceamento
+            no.setFatorBalanceamento((no.getFatorBalanceamento() - 1) - Math.max(no.getFatorBalanceamento(), 0));
+            novoNo.setFatorBalanceamento((novoNo.getFatorBalanceamento() - 1) + Math.min(no.getFatorBalanceamento(), 0));
+            if (estirpe(no)) {
+                setRaiz(novoNo);
             }
         }
-        else{
-            novoNo.setFilhoDireito(no);
-            if(no != raiz()){
-                if(no == no.getPai().getFilhoEsquerdo()){
-                    no.getPai().setFilhoEsquerdo(novoNo);
-                }
-                else{
-                    no.getPai().setFilhoDireito(novoNo);
-                }
-                novoNo.setPai(no.getPai());
-                no.setFilhoEsquerdo(null);
-            }
-        }
-        //Atualizando fator balanceamento
-        no.setFatorBalanceamento((no.getFatorBalanceamento()-1) - Math.max(no.getFatorBalanceamento(), 0));
-        novoNo.setFatorBalanceamento((novoNo.getFatorBalanceamento() -1) + Math.min(no.getFatorBalanceamento(), 0));
-        if(estirpe(no)){
-            setRaiz(novoNo);
-        }
+
     }
 
 
