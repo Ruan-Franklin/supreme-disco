@@ -35,6 +35,7 @@ public class ArvoreAVL extends ABP {
                     tmp.getFilhoEsquerdo().setPai(novoNo);
                     if ((int) tmp.getFilhoEsquerdo().getElemento() <= (int) elemento) {
                         novoNo.setFilhoEsquerdo(tmp.getFilhoEsquerdo());
+
                     } else {
                         novoNo.setFilhoDireito(tmp.getFilhoEsquerdo());
                     }
@@ -74,9 +75,21 @@ public class ArvoreAVL extends ABP {
                 atualizaFatorBalanceamento(noPai, ehFilhoEsquerdo, 2);
             }
         }
+        else if(tmp.getFilhoEsquerdo() == null) {
+            if(tmp.getPai().getFilhoDireito() == tmp) {
+                tmp.getPai().setFilhoDireito(tmp.getFilhoDireito());
+                tmp.getFilhoDireito().setPai(tmp.getPai());
+                atualizaFatorBalanceamento(noPai, ehFilhoEsquerdo, 2);
+            }
+            else{
+                tmp.getPai().setFilhoEsquerdo(tmp.getFilhoDireito());
+                tmp.getFilhoDireito().setPai(tmp.getPai());
+                atualizaFatorBalanceamento(noPai, ehFilhoEsquerdo, 2);
+            }
+        }
         else{
             No minimo = tmp;
-            minimo = tmp.getFilhoDireito();
+            minimo = minimo.getFilhoDireito();
             No pai = minimo.getPai();
             ehFilhoEsquerdo = ehFilhoEsquerdo(minimo);
             while(minimo.getFilhoEsquerdo() != null){
@@ -102,7 +115,7 @@ public class ArvoreAVL extends ABP {
         }
         //Se for 2, remove
         else if(controle == 2){
-            if (FilhoEsquerdo || raiz() == no){
+            if (FilhoEsquerdo || estirpe(no)){
                 //Decrementa o fator de balanceamento
                 no.setFatorBalanceamento(no.getFatorBalanceamento() - 1);
             }
@@ -111,11 +124,11 @@ public class ArvoreAVL extends ABP {
                 no.setFatorBalanceamento(no.getFatorBalanceamento() + 1);
             }
             //Rotaciona para a esquerda
-            if (no.getFatorBalanceamento() <= 2){
+            if (no.getFatorBalanceamento() <= -2){
                 No subArvoreDireita = no.getFilhoDireito();
                 //Rotação simples à esquerda
-                if (subArvoreDireita != null && subArvoreDireita.getFilhoDireito() != null && subArvoreDireita.getFilhoDireito().getFatorBalanceamento() <= 0) {
-                    rotacaoSimplesEsquerda(no);
+                if(subArvoreDireita.getFatorBalanceamento() <= 0){
+                    rotacaoSimplesEsquerda(no);                
                 }
                 //Rotação dupla à esquerda
                 else{
@@ -127,6 +140,7 @@ public class ArvoreAVL extends ABP {
             //Rotaciona para a direita
             else if(no.getFatorBalanceamento() >= 2){
                 No subArvoreEsquerda = no.getFilhoEsquerdo();
+                
                 //Rotação simples à direita
                 if (subArvoreEsquerda.getFatorBalanceamento() >= 0){
                     rotacaoSimplesDireita(no);
@@ -134,61 +148,63 @@ public class ArvoreAVL extends ABP {
                 //Rotação dupla à direita
                 else{
                     rotacaoSimplesEsquerda(subArvoreEsquerda);
+                    
                     rotacaoSimplesDireita(no);
                 }
             }
-
-
-
          }
         //Caso não seja necessário rotacionar
         else if(no.getFatorBalanceamento() != 0 && no != raiz() && controle == 1){
             //Chama o método atualizaFatorBalanceamento para o pai do nó
-            atualizaFatorBalanceamento(pai(no), ehFilhoEsquerdo(no), 1);
+            atualizaFatorBalanceamento(no.getPai(), ehFilhoEsquerdo(no), 1);
         }
-        else if(no.getFatorBalanceamento() != 0 && no != raiz && controle == 2){
+        else if(no.getFatorBalanceamento() == 0 && no != raiz() && controle == 2){
             //Chama o método atualizaFatorBalanceamento para o pai do nó
-            atualizaFatorBalanceamento(pai(no), ehFilhoEsquerdo(no), 2);
+            atualizaFatorBalanceamento(no.getPai(), ehFilhoEsquerdo(no.getPai()), 2);
         }
     }
-    public void rotacaoSimplesEsquerda(No no) {
-        if (no != null) {
-            No novoNo = no.getFilhoDireito();
 
-            if (novoNo != null && temEsquerdo(novoNo)) {
-                No filhoEsquerdo = novoNo.getFilhoEsquerdo();
-                no.setFilhoDireito(filhoEsquerdo);
-                if (filhoEsquerdo != null) {
-                    filhoEsquerdo.setPai(no);
-                }
-                if (no != raiz()) {
+
+    public void rotacaoSimplesEsquerda(No no) {
+            No novoNo = no.getFilhoDireito();
+            if (temEsquerdo(novoNo)) {
+                no.setFilhoDireito(novoNo.getFilhoEsquerdo());
+                novoNo.getFilhoEsquerdo().setPai(no);
+                novoNo.setFilhoEsquerdo(no);
+                if (no != raiz()){
                     if (no == no.getPai().getFilhoEsquerdo()) {
                         no.getPai().setFilhoEsquerdo(novoNo);
-                    } else {
+                    } else{
                         no.getPai().setFilhoDireito(novoNo);
                     }
                     novoNo.setPai(no.getPai());
                 }
-                no.setPai(novoNo);
-                novoNo.setFilhoEsquerdo(no);
-            } else {
-                System.out.println("Rotação simples à esquerda não é possível nesta configuração.");
+                } else {
+                    novoNo.setFilhoEsquerdo(no);
+                    if (no != raiz()) {
+                        if (no == no.getPai().getFilhoEsquerdo()) {
+
+                            no.getPai().setFilhoEsquerdo(novoNo);
+                        } else {
+                            no.getPai().setFilhoDireito(novoNo);
+                        }
+                        novoNo.setPai(no.getPai());
+                    }
+                    no.setPai(novoNo);
+                    no.setFilhoEsquerdo(null);
+                }
+
+                    //Atualizando fator balanceamento
+                    no.setFatorBalanceamento((no.getFatorBalanceamento() - 1) - Math.max(novoNo.getFatorBalanceamento(), 0));
+                    novoNo.setFatorBalanceamento((novoNo.getFatorBalanceamento() - 1) + Math.min(no.getFatorBalanceamento(), 0));
+                    if (estirpe(no)) {
+                        setRaiz(novoNo);
+                    }
+                    
             }
-
-            if (no != null && novoNo != null) {
-                no.setFatorBalanceamento(no.getFatorBalanceamento() + 1 - Math.min(novoNo.getFatorBalanceamento(), 0));
-                novoNo.setFatorBalanceamento(novoNo.getFatorBalanceamento() + 1 + Math.max(no.getFatorBalanceamento(), 0));
-            }
-
-            if (no == raiz()) {
-                setRaiz(novoNo);
-            }
-        }
-    }
-
-
+        
+             
     public void rotacaoSimplesDireita(No no) {
-        if (no != null) {
             No novoNo = no.getFilhoEsquerdo();
             if (temDireito(novoNo)) {
                 no.setFilhoEsquerdo(novoNo.getFilhoDireito());
@@ -201,8 +217,10 @@ public class ArvoreAVL extends ABP {
                         no.getPai().setFilhoDireito(novoNo);
 
                     }
-                    novoNo.setPai(novoNo);
+                    novoNo.setPai(no.getPai());
                 }
+                no.setPai(novoNo);
+
             } else {
                 novoNo.setFilhoDireito(no);
                 if (no != raiz()) {
@@ -223,7 +241,6 @@ public class ArvoreAVL extends ABP {
             }
         }
 
-    }
 
 
     public boolean ehFilhoEsquerdo(No no){

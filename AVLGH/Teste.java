@@ -11,6 +11,8 @@ public class Teste {
         arvore.inserir(3);
         arvore.inserir(5);
         arvore.inserir(9);
+        arvore.inserir(7);
+        arvore.inserir(10);
         //Impressão da árvore
         arvore.imprimirArvore();
     }
