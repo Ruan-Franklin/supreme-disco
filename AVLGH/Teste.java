@@ -1,5 +1,6 @@
 public class Teste {
     public static void main(String[] args) {
+        /* 
         System.out.println(" Árvore Binária de Pesquisa");
         //Criação da árvore com a raiz
         ABP arvore = new ABP(6);
@@ -14,6 +15,17 @@ public class Teste {
         arvore.inserir(7);
         arvore.inserir(10);
         //Impressão da árvore
-        arvore.imprimirArvore();
+        arvore.imprimirArvore(); */
+        //AVL
+        ArvoreAVL avl = new ArvoreAVL(2);
+        avl.inserir(3);
+        avl.inserir(4);
+        avl.inserir(5);
+        avl.inserir(6);
+        avl.inserir(7);
+        avl.inserir(8);
+        avl.inserir(1);
+        avl.imprimirArvore();
     }
+
 }

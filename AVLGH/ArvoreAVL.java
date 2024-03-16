@@ -103,26 +103,11 @@ public class ArvoreAVL extends ABP {
     
 
     public void atualizaFatorBalanceamento(No no, boolean FilhoEsquerdo, int controle){
-        //Se for 1, insere
-        if(controle == 1){
-            if (FilhoEsquerdo){
-                //Se for o filho esquerdo, o fator de balanceamento é incrementado
-                no.setFatorBalanceamento(no.getFatorBalanceamento() + 1);
-            } else{
-                //Se for o filho direito, o fator de balanceamento é decrementado
-                no.setFatorBalanceamento(no.getFatorBalanceamento() - 1);
-            }
-        }
+        // Atualiza o fator de balanceamento usando a diferença entre as alturas das subárvores
+        no.setFatorBalanceamento(alturaTotal(no.getFilhoEsquerdo()) - alturaTotal(no.getFilhoDireito()));
+    
         //Se for 2, remove
-        else if(controle == 2){
-            if (FilhoEsquerdo || estirpe(no)){
-                //Decrementa o fator de balanceamento
-                no.setFatorBalanceamento(no.getFatorBalanceamento() - 1);
-            }
-            else{
-                //Incrementa o fator de balanceamento
-                no.setFatorBalanceamento(no.getFatorBalanceamento() + 1);
-            }
+        if(controle == 2){
             //Rotaciona para a esquerda
             if (no.getFatorBalanceamento() <= -2){
                 No subArvoreDireita = no.getFilhoDireito();
@@ -135,7 +120,7 @@ public class ArvoreAVL extends ABP {
                     rotacaoSimplesDireita(subArvoreDireita);
                     rotacaoSimplesEsquerda(no);
                 }
-
+    
             }
             //Rotaciona para a direita
             else if(no.getFatorBalanceamento() >= 2){
@@ -152,7 +137,7 @@ public class ArvoreAVL extends ABP {
                     rotacaoSimplesDireita(no);
                 }
             }
-         }
+        }
         //Caso não seja necessário rotacionar
         else if(no.getFatorBalanceamento() != 0 && no != raiz() && controle == 1){
             //Chama o método atualizaFatorBalanceamento para o pai do nó
