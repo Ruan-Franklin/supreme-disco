@@ -74,7 +74,6 @@ public class ArvoreAVL extends ABP {
     }
     else{
         if(no.getFilhoDireito().getFilhoEsquerdo() != null){
-            No novo_no = new No(no.get_filho_direito().get_filho_esquerdo().get_elemento(), no);
             No novoNo = new No(no.getFilhoDireito().getFilhoEsquerdo().getElemento(), no);
             no.getPai().setFilhoEsquerdo(no.getFilhoDireito());
             no.getFilhoDireito().setPai(no.getPai());
@@ -110,7 +109,7 @@ public class ArvoreAVL extends ABP {
         return noProcurado;
     }
 
-    public No remover(Object elemento) throws NoInvalidoExcecao{
+    public void removerAVL(Object elemento) throws NoInvalidoExcecao{
         No removido = busca(elemento);
         if(removido.getElemento() != elemento){
             throw new NoInvalidoExcecao("Elemento não existe!");
@@ -164,7 +163,6 @@ public class ArvoreAVL extends ABP {
             pai = removido;
     }
         tamanho--;
-        return removido;
     }
     public void rotacaoSimplesEsqRemove(No no){
         if (no == super.raiz()){
@@ -250,7 +248,7 @@ public class ArvoreAVL extends ABP {
             fatorBalanceamentoRtDireita(no, no.getPai());
     }
 }
-    public No inserir(Object elemento){
+    public No inserirAVL(Object elemento){
         No no = super.inserir(elemento);
         if(no.ehFilhoEsquerdo()){
             no.getPai().setFatorBalanceamento(no.getPai().geFatorBalanceamento() + 1);
@@ -260,7 +258,7 @@ public class ArvoreAVL extends ABP {
             no.getPai().setFatorBalanceamento(no.getPai().getFatorBalanceamento() - 1);
             no = no.getPai();
         }
-        while(no.getFatorBalanceamento() != 0 && no != super.raiz() && no.get_fator_balanceamento()  != 2  && no.get_fator_balanceamento() != -2){
+        while(no.getFatorBalanceamento() != 0 && no != super.raiz() && no.getFatorBalanceamento()  != 2  && no.getFatorBalanceamento() != -2){
             if(no.ehFilhoEsquerdo()){
                 no.getPai().setFatorBalanceamento(no.getPai().getFatorBalanceamento() + 1);
             }
@@ -309,5 +307,22 @@ public class ArvoreAVL extends ABP {
     }
     return no;
     }
-}    
-   
+    public void mostrarAVL(){
+        No origem [][] = new No [altura(raiz()) + 1] [tamanho()];
+        contagem = 0;
+        emOrdem(raiz(), origem);
+        for(int i = 0 ; i <altura(raiz()) ; i++){
+            for (int j = 0; j < tamanho; j++){
+                if(origem[i][j] == null){
+                    System.out.print("\t");
+                }
+                else{
+                    System.out.printf("\t" + (origem[i][j]).getElemento() + "[%d]",(origem[i][j]).getFatorBalanceamento());
+                    }
+                }
+                System.out.println("\n");
+            }
+            System.out.println("tamanho: " + tamanho);
+
+        }
+    }   
