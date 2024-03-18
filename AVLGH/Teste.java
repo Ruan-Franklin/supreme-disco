@@ -18,6 +18,12 @@ public class Teste {
         arvore.imprimirArvore(); */
         //AVL
         ArvoreAVL arvore = new ArvoreAVL(25);
+        arvore.inserir(20);
+        arvore.inserir(36);
+        arvore.inserir(10);
+        arvore.inserir(22);
+        arvore.inserir(30);
+        arvore.inserir(40);
         arvore.mostrarAVL();
         
 }

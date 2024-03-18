@@ -148,7 +148,7 @@ public class ABP implements IABP {
         //Cria o nó a ser inserido com o elemento
         No novoNo = new No(elemento);
         //Verifica se o elemento inserido já existe na árvore
-        if (elemento.equals(temp.getElemento())){
+        if (elemento != null && temp != null &&  temp.getElemento() != null && elemento.equals(temp.getElemento())){
             throw new NoInvalidoExcecao("Elemento " + elemento + " já existe na árvore");
 
         }
@@ -222,6 +222,7 @@ public class ABP implements IABP {
             temp.setElemento(minimo.getElemento());
         }
         tamanho--;
+        
     }
     @Override
     public void preOrdem(No no){
