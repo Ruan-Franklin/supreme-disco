@@ -24,6 +24,12 @@ public class Teste {
         arvore.inserir(22);
         arvore.inserir(30);
         arvore.inserir(40);
+        arvore.inserir(24);
+        arvore.inserir(12);
+        arvore.inserir(28);
+        arvore.mostrarAVL();
+        //Removendo
+        arvore.remover(28);
         arvore.mostrarAVL();
         
 }

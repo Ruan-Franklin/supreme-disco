@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
+import java.util.LinkedList;
 public class ArvoreAVL extends ABP {
     private List<No> nos = new ArrayList<No>();
 
@@ -321,25 +323,115 @@ public class ArvoreAVL extends ABP {
     }
 
     public void mostrarAVL() {
-        organizar(raiz());
-        System.out.println("Árvore Binária AVL de Pesquisa:");
-        for (int i = 0; i < altura(raiz()); i++) {
-            for (int j = 0; j < nos.size(); j++) {
-                if (profundidade(nos.get(j)) == i) {
-                    System.out.print("\t" + nos.get(j).getElemento() + "[" + calcularFatorBalanceamento(nos.get(j)) + "]");
+        int altura = altura(raiz());
+        List<List<String>> linhas = new ArrayList<>();
+        List<No> nivel = new ArrayList<>();
+        List<No> proximoNivel = new ArrayList<>();
+
+        nivel.add(raiz());
+        int nn = 1;
+        int largura = 0;
+
+        while (nn != 0) {
+            List<String> linha = new ArrayList<>();
+            nn = 0;
+
+            for (No n : nivel) {
+                if (n == null) {
+                    linha.add(null);
+                    proximoNivel.add(null);
+                    proximoNivel.add(null);
                 } else {
-                    System.out.print("\t");
+                    String aa = n.getElemento() + "[" + calcularFatorBalanceamento(n) + "]";
+                    linha.add(aa);
+                    if (aa.length() > largura) largura = aa.length();
+
+                    proximoNivel.add(n.getFilhoEsquerdo());
+                    proximoNivel.add(n.getFilhoDireito());
+
+                    if (n.getFilhoEsquerdo() != null) nn++;
+                    if (n.getFilhoDireito() != null) nn++;
+                }
+            }
+
+            if (largura % 2 == 1) largura++;
+
+            linhas.add(linha);
+
+            List<No> tmp = nivel;
+            nivel = proximoNivel;
+            proximoNivel = tmp;
+            proximoNivel.clear();
+        }
+
+        int perpiece = largura;
+        for (int i = 0; i < linhas.size(); i++) {
+            List<String> linha = linhas.get(i);
+            int hpw = (int) Math.floor(perpiece / 2f) - 1;
+            if (i > 0) {
+                for (int j = 0; j < linha.size(); j++) {
+
+                    char c = ' ';
+                    if (j % 2 == 1) {
+                        if (linha.get(j - 1) != null) {
+                            c = (linha.get(j) != null) ? '┴' : '┘';
+                        } else {
+                            if (j < linha.size() && linha.get(j) != null) c = '└';
+                        }
+                    }
+                    System.out.print(c);
+
+                    if (linha.get(j) == null) {
+                        for (int k = 0; k < perpiece - 1; k++) {
+                            System.out.print(" ");
+                        }
+                    } else {
+
+                        for (int k = 0; k < hpw; k++) {
+                            System.out.print(j % 2 == 0 ? " " : "─");
+                        }
+                        System.out.print(j % 2 == 0 ? "┌" : "┐");
+                        for (int k = 0; k < hpw; k++) {
+                            System.out.print(j % 2 == 0 ? "─" : " ");
+                        }
+                    }
+                }
+                System.out.println();
+            }
+
+            for (int j = 0; j < linha.size(); j++) {
+
+                String f = linha.get(j);
+                if (f == null) f = "";
+                int gap1 = (int) Math.ceil(perpiece / 2f - f.length() / 2f);
+                int gap2 = (int) Math.floor(perpiece / 2f - f.length() / 2f);
+
+                for (int k = 0; k < gap1; k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(f);
+                for (int k = 0; k < gap2; k++) {
+                    System.out.print(" ");
                 }
             }
             System.out.println();
+
+            perpiece /= 2;
         }
-        nos.clear();
+    }
+
+    public int alturaBalanceada(No no) {
+        if (no == null) {
+            return 0;
+        }
+        int alturaEsquerda = (no.getFilhoEsquerdo() != null) ? alturaBalanceada(no.getFilhoEsquerdo()) : 0;
+        int alturaDireita = (no.getFilhoDireito() != null) ? alturaBalanceada(no.getFilhoDireito()) : 0;
+        return 1 + Math.max(alturaEsquerda, alturaDireita);
     }
 
     public int calcularFatorBalanceamento(No no) {
-        int alturaEsquerda = (no.getFilhoEsquerdo() != null) ? altura(no.getFilhoEsquerdo()) : 0;
-        int alturaDireita = (no.getFilhoDireito() != null) ? altura(no.getFilhoDireito()) : 0;
+        int alturaEsquerda = (no.getFilhoEsquerdo() != null) ? alturaBalanceada(no.getFilhoEsquerdo()) : 0;
+        int alturaDireita = (no.getFilhoDireito() != null) ? alturaBalanceada(no.getFilhoDireito()) : 0;
         return alturaEsquerda - alturaDireita;
-    }
-
-    }   
+}
+}
