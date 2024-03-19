@@ -1,6 +1,8 @@
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Queue;
+import java.util.Set;
 import java.util.LinkedList;
 public class ArvoreAVL extends ABP {
     private List<No> nos = new ArrayList<No>();
@@ -331,33 +333,30 @@ public class ArvoreAVL extends ABP {
         nivel.add(raiz());
         int nn = 1;
         int largura = 0;
-
+        Set<No> nosImpressos = new HashSet<>();
         while (nn != 0) {
             List<String> linha = new ArrayList<>();
             nn = 0;
-
             for (No n : nivel) {
                 if (n == null) {
                     linha.add(null);
                     proximoNivel.add(null);
                     proximoNivel.add(null);
                 } else {
-                    String aa = n.getElemento() + "[" + calcularFatorBalanceamento(n) + "]";
-                    linha.add(aa);
-                    if (aa.length() > largura) largura = aa.length();
-
+                    if (!nosImpressos.contains(n)) {
+                        String aa = n.getElemento() + "[" + calcularFatorBalanceamento(n) + "]";
+                        linha.add(aa);
+                        if (aa.length() > largura) largura = aa.length();
+                        nosImpressos.add(n);
+                    }
                     proximoNivel.add(n.getFilhoEsquerdo());
                     proximoNivel.add(n.getFilhoDireito());
-
                     if (n.getFilhoEsquerdo() != null) nn++;
                     if (n.getFilhoDireito() != null) nn++;
                 }
             }
-
             if (largura % 2 == 1) largura++;
-
             linhas.add(linha);
-
             List<No> tmp = nivel;
             nivel = proximoNivel;
             proximoNivel = tmp;
