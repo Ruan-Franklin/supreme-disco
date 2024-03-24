@@ -306,6 +306,27 @@ public class ABP implements IABP {
         }
     }
 
+    public No buscaAVL(Object elemento, No noAtual){
+        if(externo(noAtual)){
+            return noAtual;}
+        //Procurando pelo lado esquerdo
+        else if((int)noAtual.getElemento() > (int)elemento){
+            if(noAtual.getFilhoEsquerdo() != null){
+                return buscaAVL(elemento, noAtual.getFilhoEsquerdo());
+            }
+        }
+
+        //Caso o elemento seja encontrado
+        else if((int)noAtual.getElemento() == (int)elemento){   
+            return noAtual;
+        }
+        //Procurando pelo lado direito
+        else if(noAtual.getFilhoDireito() != null){
+            return buscaAVL(elemento, noAtual.getFilhoDireito());
+        }
+        return noAtual;
+    }
+
     public void AVLEmOrdem(No no, No matriz[][]){
         if(no.getFilhoEsquerdo() != null ){
             AVLEmOrdem(no.getFilhoEsquerdo(), matriz);}

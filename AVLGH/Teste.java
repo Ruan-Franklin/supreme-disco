@@ -8,6 +8,8 @@ public class Teste {
         arvore.inserirAVL(5);
         //Removendo
         arvore.removerAVL(3);
+
+
         arvore.mostrarAVL();
         
 }

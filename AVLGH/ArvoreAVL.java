@@ -112,7 +112,7 @@ public class ArvoreAVL extends ABP {
         return noProcurado;
     }
 
-    public void removerAVL(Object elemento) throws NoInvalidoExcecao{
+    public No removerAVL(Object elemento) throws NoInvalidoExcecao{
         No removido = busca(elemento, super.raiz());
         if(removido.getElemento() != elemento){
             throw new NoInvalidoExcecao("Elemento não existe!");
@@ -165,6 +165,7 @@ public class ArvoreAVL extends ABP {
             pai = removido;
     }
         tamanho--;
+        return removido;
     }
     public void rotacaoSimplesEsqRemove(No no){
         if (no == super.raiz()){
