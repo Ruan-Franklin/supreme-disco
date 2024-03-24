@@ -2,6 +2,7 @@ import java.util.ArrayList;
 public class ABP implements IABP {
     public No raiz;
     protected int tamanho;
+    public int contador;
 
     //Construtor da classe Arvore Binária de Pesquisa
     public ABP(Object elemento) {
@@ -304,6 +305,32 @@ public class ABP implements IABP {
             System.out.println();
         }
     }
+
+    public void AVLEmOrdem(No no, No matriz[][]){
+        if(no.getFilhoEsquerdo() != null ){
+            AVLEmOrdem(no.getFilhoEsquerdo(), matriz);}
+        matriz[profundidade(no)][contador++] = no;
+
+        if(no.getFilhoDireito() != null){
+            AVLEmOrdem(no.getFilhoDireito(), matriz);
+        }
+    }
+    public void mostrarAVL(){
+        No matriz [][] = new No [altura(raiz) + 1] [tamanho()];
+        contador = 0;
+        AVLEmOrdem(raiz, matriz);
+        for(int i = 0; i < altura(raiz) + 1; i++){
+            for (int j = 0; j < tamanho; j++){
+                if(matriz[i][j] == null){
+                    System.out.print("\t");
+                } else {
+                    System.out.printf("\t" + (matriz[i][j]).getElemento() + "[%d]",(matriz[i][j]).getFatorBalanceamento());
+                }
+            }
+            System.out.print("\n");
+        }
+    }
+    
 
 
 

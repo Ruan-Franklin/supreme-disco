@@ -74,13 +74,20 @@ public class AVR extends ABP {
         }
         else{
             System.out.println("rota simples esquerdo sem raiz 3");
+            No novoNo = no.getPai().getPai();
+            no.getPai().setPai(no);
+            no.setFilhoEsquerdo(no.getPai());
+            no.getFilhoEsquerdo().setFilhoDireito(null);
+            novoNo.setFilhoEsquerdo(no);
+            no.setPai(novoNo);
+        }
+}
+    public No repintar(No no){
+        if(no.getPai().getCor() == "preto"){
             
 
+
         }
-
-
-
-}
 
 
 

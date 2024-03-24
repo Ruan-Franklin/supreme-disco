@@ -60,20 +60,20 @@ public class ArvoreAVL extends ABP {
     }
 
     public void rotacaoSimplesEsquerda(No no){
-        if (no == super.raiz()){
+        if (no == super.raiz){
             if(no.getFilhoDireito().getFilhoEsquerdo() != null){
                 No novoNo = new No(no.getFilhoDireito().getFilhoEsquerdo().getElemento());
                 no.setPai(no.getFilhoDireito());
                 no.getPai().setPai(null);
-                no.getFilhoDireito().setFilhoEsquerdo(no);;
+                no.getFilhoDireito().setFilhoEsquerdo(no);
                 no.setFilhoDireito(novoNo);
-                super.setRaiz(no.getPai());
+                super.raiz = no.getPai();
             }
             else{
                 no.getFilhoDireito().setFilhoEsquerdo(no);
                 no.setPai(no.getFilhoDireito());
                 no.setFilhoDireito(null);
-                super.setRaiz(no.getPai());
+                super.raiz = no.getPai();
             }
             fatorBalanceamentoRtEsquerda(no, no.getPai());
     }
@@ -145,8 +145,8 @@ public class ArvoreAVL extends ABP {
     }
     //Remoção do nó direito
         else{
-                while(pai != super.raiz() && pai.getFatorBalanceamento() != 2 && pai.getFatorBalanceamento() != 0 || pai != super.raiz() && pai.getFatorBalanceamento() != -2 && pai.getFatorBalanceamento() != 0){
-                    pai.setFatorBalanceamento(pai.getFatorBalanceamento() + 1);
+            while (pai != super.raiz && pai.getFatorBalanceamento() != 2 && pai.getFatorBalanceamento() != 0 || pai != super.raiz && pai.getFatorBalanceamento() != -2 && pai.getFatorBalanceamento() != 0) {
+                pai.setFatorBalanceamento(pai.getFatorBalanceamento() + 1);
                     if(pai.getFatorBalanceamento() == 2 || pai.getFatorBalanceamento() == -2){
                         pai.getPai().setFatorBalanceamento(pai.getPai().getFatorBalanceamento() -1);
                         break;
@@ -270,40 +270,40 @@ public class ArvoreAVL extends ABP {
             no = no.getPai();
         }
         if(no.getFatorBalanceamento() == 2 && no.getFilhoEsquerdo().getFatorBalanceamento() == 1){
-            System.out.println("Rotaçao simples para direita");
+            System.out.println("Rotaçao simples para a  direita");
             mostrarAVL();
-            System.out.println("-------------------------------------------------");
+            System.out.println("____________________________________");
             rotacaoSimplesDireita(no);
             mostrarAVL();
     }
     else if (no.getFatorBalanceamento() == -2 && no.getFilhoDireito().getFatorBalanceamento() == -1){
-        System.out.println("Rotaçao simples para esquerda");
+        System.out.println("O FB de algum elemento chegou a -2, então, Rotaçao simples para a esquerda");
         mostrarAVL();            
-        System.out.println("-------------------------------------------------");
+        System.out.println("___________________________________________________");
         rotacaoSimplesEsquerda(no);
         mostrarAVL();
     }
     else if (no.getFatorBalanceamento() == 2 && no.getFilhoEsquerdo().getFatorBalanceamento() == -1){
-        System.out.println("Rotaçao simples para esquerda e rotação simples direita = Rotaçao Dupla a direita");
+        System.out.println("O FB de algum elemento chegou A 2 e um dos descedentes tem FB -1, então Rotaçao Dupla  para a direita");
         mostrarAVL();
-        System.out.println("-------------------------------------------------");
+        System.out.println("________________________________________________");
         no = no.getFilhoEsquerdo();
         rotacaoSimplesEsquerda(no);
         System.out.println("key:" + no.getElemento());
         mostrarAVL();
-        System.out.println("-------------------------------------------------");
+        System.out.println("_______________________________________");
         rotacaoSimplesDireita(no.getPai().getPai());
         mostrarAVL();
     }
     else if (no.getFatorBalanceamento() == -2 && no.getFilhoDireito().getFatorBalanceamento() == 1){
-        System.out.println("Rotaçao simples para direita e rotação simples esquerda = Rotaçao Dupla a esquerda");
+        System.out.println("O FB de algum dos elementos chegou a a -2 e um dos seus descedentes é igual a 1, então, Rotaçao Dupla para a esquerda");
         mostrarAVL();
-        System.out.println("-------------------------------------------------");
+        System.out.println("_________________________________________________");
         System.out.println("key:" + no.getElemento());
         no = no.getFilhoDireito();
         rotacaoSimplesDireita(no);
         mostrarAVL();
-        System.out.println("-------------------------------------------------");
+        System.out.println("______________________________________________________");
         rotacaoSimplesEsquerda(no.getPai().getPai());
         mostrarAVL();
     }
@@ -316,108 +316,8 @@ public class ArvoreAVL extends ABP {
         return no.getPai().getFilhoEsquerdo() == no;
     }
 
-    public void organizar(No no) {
-        if (no != null) {
-            organizar(no.getFilhoEsquerdo());
-            nos.add(no);
-            organizar(no.getFilhoDireito());
-        }
-    }
-
-    public void mostrarAVL() {
-        int altura = altura(raiz());
-        List<List<String>> linhas = new ArrayList<>();
-        List<No> nivel = new ArrayList<>();
-        List<No> proximoNivel = new ArrayList<>();
-
-        nivel.add(raiz());
-        int nn = 1;
-        int largura = 0;
-        Set<No> nosImpressos = new HashSet<>();
-        while (nn != 0) {
-            List<String> linha = new ArrayList<>();
-            nn = 0;
-            for (No n : nivel) {
-                if (n == null) {
-                    linha.add(null);
-                    proximoNivel.add(null);
-                    proximoNivel.add(null);
-                } else {
-                    if (!nosImpressos.contains(n)) {
-                        String aa = n.getElemento() + "[" + calcularFatorBalanceamento(n) + "]";
-                        linha.add(aa);
-                        if (aa.length() > largura) largura = aa.length();
-                        nosImpressos.add(n);
-                    }
-                    proximoNivel.add(n.getFilhoEsquerdo());
-                    proximoNivel.add(n.getFilhoDireito());
-                    if (n.getFilhoEsquerdo() != null) nn++;
-                    if (n.getFilhoDireito() != null) nn++;
-                }
-            }
-            if (largura % 2 == 1) largura++;
-            linhas.add(linha);
-            List<No> tmp = nivel;
-            nivel = proximoNivel;
-            proximoNivel = tmp;
-            proximoNivel.clear();
-        }
-
-        int perpiece = largura;
-        for (int i = 0; i < linhas.size(); i++) {
-            List<String> linha = linhas.get(i);
-            int hpw = (int) Math.floor(perpiece / 2f) - 1;
-            if (i > 0) {
-                for (int j = 0; j < linha.size(); j++) {
-
-                    char c = ' ';
-                    if (j % 2 == 1) {
-                        if (linha.get(j - 1) != null) {
-                            c = (linha.get(j) != null) ? '┴' : '┘';
-                        } else {
-                            if (j < linha.size() && linha.get(j) != null) c = '└';
-                        }
-                    }
-                    System.out.print(c);
-
-                    if (linha.get(j) == null) {
-                        for (int k = 0; k < perpiece - 1; k++) {
-                            System.out.print(" ");
-                        }
-                    } else {
-
-                        for (int k = 0; k < hpw; k++) {
-                            System.out.print(j % 2 == 0 ? " " : "─");
-                        }
-                        System.out.print(j % 2 == 0 ? "┌" : "┐");
-                        for (int k = 0; k < hpw; k++) {
-                            System.out.print(j % 2 == 0 ? "─" : " ");
-                        }
-                    }
-                }
-                System.out.println();
-            }
-
-            for (int j = 0; j < linha.size(); j++) {
-
-                String f = linha.get(j);
-                if (f == null) f = "";
-                int gap1 = (int) Math.ceil(perpiece / 2f - f.length() / 2f);
-                int gap2 = (int) Math.floor(perpiece / 2f - f.length() / 2f);
-
-                for (int k = 0; k < gap1; k++) {
-                    System.out.print(" ");
-                }
-                System.out.print(f);
-                for (int k = 0; k < gap2; k++) {
-                    System.out.print(" ");
-                }
-            }
-            System.out.println();
-
-            perpiece /= 2;
-        }
-    }
+  
+   
 
     public int alturaBalanceada(No no) {
         if (no == null) {

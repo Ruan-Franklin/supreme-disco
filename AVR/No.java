@@ -49,6 +49,8 @@ public class No {
         this.fatorBalanceamento = fatorBalanceamento;
     }
 
+    public No getCor(No 
+
     public void setCor(Object cor){
         this.cor = cor;
     }
