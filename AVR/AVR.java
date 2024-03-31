@@ -96,18 +96,58 @@ public class AVR extends ABP {
         t(Rubro),u(Negro) e w(Negro)'
          */
         else if (no.getPai().getPai().getFilhoDireito() == no.getPai() && no.getPai().getPai().getFilhoEsquerdo() != null && no.getPai().getPai().getFilhoEsquerdo().getCor() != "preto"){
-            System.out.println("Caso 2 - filho na direita");
+            System.out.println("Caso 2 - filho no lado esquerdo");
             //Avó negro && pai e tio do nó rubros
             if(no.getPai().getCor() == "vermelho" && no.getPai().getPai().getCor() == "preto" && no.getPai().getPai().getFilhoEsquerdo().getCor() == "vermelho"){
+                no.getPai().setCor("preto");
+                no.getPai().getPai().getFilhoDireito().setCor("preto");
+                if(no.getPai().getPai() == super.raiz){
+                    return no;
+            }
+                else{
+                    no.getPai().getPai().setCor("vermelho");
+                    pintar(no.getPai().getPai());
+                    
+
+                }
+            }
+        }
+        /* 
+       Caso 3
+            Caso 3: suponha w rubro, seu pai t é negro e
+        seu irmão u é negro. Neste caso, para manter
+        o critério III é necessário fazer rotações com
+        w, v, t e u. Existe 4 subcasos que
+        correspondem às 4 rotações possíveis
+        */
+
+      // Caso 3a: Rotação direita simples
+        else if (no.getPai().getPai().getFilhoEsquerdo() == no.getPai()  && no.getPai().getPai().getFilhoDireito() == null && no.getPai().getFilhoDireito() == null){
+            System.out.println("Estou no caso 3a - rotação direta simples");
+            no.getPai().setCor("preto");
+            no.getPai().getPai().setCor("vermelho");
+            rotacaoSimplesEsquerda(no);
+        }
+        //caso 3b: rotação diretia simples
+        else if (no.getPai().getPai().getFilhoDireito() == no.getPai()){
+            
+        } 
 
 
 
-
+        else if (no.getPai().getPai().getFilhoDireito() == no.getPai()  && no.getPai().getPai().getFilhoEsquerdo() == null && no.getPai().getFilhoEsquerdo() == null){
+            System.out.println("Estou no caso 3b - rotação diretia simples");
+            no.getPai().setCor("preto");
+            no.getPai().getPai().setCor("vermelho");
+            rotacaosimplesEsquerda(no);
+            System.out.println("Estou  caso 3b - rotação direita simples");
+            no.getPai().setCor("negro");
+            no.getPai().getPai().setCor("vermelho");
+            rotacaoSimplesEsquerda(no);
+      }
 
         
         }
-    }
-
 
 
 
