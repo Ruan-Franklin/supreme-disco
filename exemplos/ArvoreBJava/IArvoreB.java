@@ -25,12 +25,14 @@ public interface IArvoreB{
      * @param chave o elemento a ser buscado
      * @return o elemento buscado, ou null se ele não estiver na árvore
      */
-    public Pagina buscar(Object chave);
+    public Pagina buscar(Object chave) throws ArvoreVaziaExcecao;
 
     /*
      *Percorre todos os nós em uma subárvore com raiz
     * em uma determinada página
      */
     public void percorrer();
+
+
 
 }
