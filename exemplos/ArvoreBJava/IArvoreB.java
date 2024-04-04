@@ -33,6 +33,10 @@ public interface IArvoreB{
      */
     public void percorrer();
 
+    /*
+      * Limpa a árvore de todos os elementos
 
-
+     
+     */
+    public void limpar();
 }
