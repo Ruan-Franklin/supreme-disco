@@ -84,8 +84,70 @@ public class Pagina{
     }
         return -(esquerda + 1); //Não encontrou
 }
+    public void inserirNaoCheio(int chave){
+        //Criando uma nova página
+        int indice = numero - 1;
+        if(folha){
+            while(indice >= 0 && chaves[indice] > chave){}
+            chaves[indice+1] = chaves[indice];
+            indice--;
+        }
+        //Inserindo a chave na página
+        chaves[indice+1] = chave;
+        numero++;
+        else{
+            // Encontra o filho que terá a nova chave
+            while(indice >= 0 && chaves[indice] > chave){
+                indice--;
+            }
+            //Verifica se a página filho está cheia
+            if(filhos[indice + 1].numero==2*t-1){
+                // Se o filho está cheio, divide-o
+                dividirFilho(indice + 1, filhos[indice+1])
+                //Depois de dividir, a chave do meio de filhos[indice] sobe para a página atual e  
+                //filhos[indice] é dividido m dois. Verifica em qual dos dois filhos a chave deve ser inserida
+                if(chaves[indice + 1] < chave){
+                    indice++;
+                }
+                filhos[indice + 1].inserirNaoCheio(chave);
+            }
+        }
+    }
 
+        public void dividirFilho(int indice, Pagina pagina){
+            Pagina novaPagina = new Pagina(pagina.getT(), pagina.getFolha());
+            pagina.numero = t - 1;
+            // Copia as chaves da página para a nova página
+            for(int i = 0 ; i < t - 1 ; i++){
+                novaPagina.chaves[i] = pagina.chaves[i+t];
+            }
+            // Copia os filhos da página para a nova página, se não for folha
+            if(!pagina.folha){
+                for(int i = 0 ; i < t ; i++){   
+                    novaPagina.filhos[i] = pagina.filhos[i+t];
+                }
+                // Reduz o número de chaves da página atual
+                pagina.numero = t - 1;
+                // Como esta página vai ter um novo filho, cria espaço para o novo filho
+                //Como esta pagina vai ter um novo filho, cria um espaço para o filho novo.
+                for(int i = numero ; numero >= indice + 1 ; i--){
+                    filhos[i+1] = filhos[i];
+                }
+                // Coloca o novo filho na posição correta
+                
+                filhos[i+1] = novaPagina;
+                //Move as chaves uma posição para a frente
+                for(int i = numero - 1 ; i >= indice ; i--){
+                    chaves[i+1] = chaves[i];
+                }
+                // Coloca a chave do meio de y na posição correta na página atua
+                chaves[indice] = novaPagina.chaves[t-1];        
+                // Incrementa o número de chaves na página atual
+                numero++;
+        
 
+                }
 
-
-}
+            }
+            }
+        
