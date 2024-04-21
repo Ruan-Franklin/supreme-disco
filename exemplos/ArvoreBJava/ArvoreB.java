@@ -54,6 +54,57 @@ public class ArvoreB{
             raiz.inserirNaoCheio(chave);
     }
     }
+    public void remover(Pagina pagina, int chave){
+        //Busca a chave na página
+        int indice = pagina.buscaBinaria(chave);
+        //A chave está na página e a página é uma folha
+        if(indice >= 0 && pagina.getFolha()){
+            pagina.removerChave(indice);
+        }
+        
+        //A chave está na página e a página não é uma folha
+        else if(indice >= 0 && !pagina.getFolha()){
+            //Substitui a chave pela chave sucessora
+            int chaveSucessora = pagina.getChaveSucessora(indice);
+            pagina.setChave(indice, chaveSucessora);
+            //Remove a chave sucessora da página
+            remover(pagina.getFilho(indice + 1), chaveSucessora);
+        }
+        //A chave não está na página e a página é uma folha
+        else if(indice < 0 && pagina.getFolha()){
+            return;
+        }
+        //A chave não está na página e a página não é uma folha
+        else{
+            //Busca o filho onde a chave pode estar
+            int indiceFilho = -(indice + 1);
+            Pagina filho = pagina.getFilho(indiceFilho);
+            //Se o filho tem o número mínimo de chaves, preenche o filho
+            if(filho.getNumero() == t - 1){
+                //Se o filho anterior tem mais de t - 1 chaves, empresta uma chave
+                if(indiceFilho > 0 && pagina.getFilho(indiceFilho - 1).getNumero() >= t){
+                    filho.emprestarDoAnterior(indiceFilho);
+                }
+                //Se o filho seguinte tem mais de t - 1 chaves, empresta uma chave
+                else if(indiceFilho < pagina.getNumero() && pagina.getFilho(indiceFilho + 1).getNumero() >= t){
+                    filho.emprestarDoProximo(indiceFilho);
+                }
+                //Se os filhos anterior e seguinte têm t - 1 chaves, funde o filho com um dos filhos
+                else{
+                    if(indiceFilho < pagina.getNumero()){
+                        filho.fundir(indiceFilho);
+                    }
+                    else{
+                        filho.fundir(indiceFilho - 1);
+                    }
+                }
+            }
+            //Remove a chave recursivamente
+            remover(filho, chave);
+        }
+        
+
+    }
     
 
     

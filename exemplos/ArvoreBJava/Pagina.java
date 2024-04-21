@@ -148,7 +148,74 @@ public class Pagina{
         
 
                 }
-
             }
-    }
+
+            public void removerChave(int chave){
+                int indice = buscaBinaria(chave);
+                
+                //A chave está presente nessa página.  
+                if (indice < numero && chaves[indice] == chave){
+                    //Se a página é uma folha. remove a chave diretamente.
+                    
+                    //Se a chave é uma folha, remove a chave diretamente
+                    if(folha){
+                        for(int i = 0 ; i < numero ; ++i){                            
+                            chaves[i-1] = chaves[i]; //Move todas as chaves após a chave a ser removida uma posição para trás
+                        }
+                        numero--; //Decrementa o número de chaves
+                        
+                        }
+                    else{
+                         //SE a chave não é uma folha, substitua a chave pelo predecessor ou sucessor
+                           // e remova o predecessor ou sucessor
+                           //Substituir a chave pelo maior elemento da subárvore esquerda
+                            if(filhos[indice].numero >= t){
+                                 int antecessor = getChaveAntecessora(indice);
+                                 chaves[indice] = antecessor;
+                                 filhos[indice].removerChave(antecessor);
+                            }
+                        }
+                    }
+                else{
+                    //A chave não está presente nesta página ,desce para o filho apropriado.
+                    if(folha){
+                        //CHave fora da árvore
+                        System.out.println( "A chave " + chave + " não está presente na árvore");
+                    }
+                    else{
+                        /// O filho onde a chave deve estar tem apenas t-1 chaves
+                        // Então, precisamos ajustar a árvore antes de descer para o filho
+                        if(filhos[indice].numero == t-1){
+                            //Se o filho tem menos de t chaves, preenche o filho
+                            if(indice != numero && filhos[indice+1].numero >= t){
+                                //Se o filho seguinte tem mais de t-1 chaves, empresta uma chave
+                                emprestarDoProximo(indice);
+                            }
+                            else if(indice != 0 && filhos[indice-1].numero >= t){
+                                //Se o filho anterior tem mais de t-1 chaves, empresta uma chave
+                                emprestarDoAnterior(indice);
+                            }
+                            else{
+                                //Se os filhos anterior e seguinte têm t-1 chaves, funde o filho com um dos filhos
+                                if(indice != numero){
+                                    fundir(indice);
+                                }
+                                else{
+                                    fundir(indice-1);
+                                }
+                            }
+
+                        }
+                    }
+
+
+            public int getChaveAntecessora(int indice){
+                Pagina atual = filhos[indice];
+                while(!atual.folha){
+                    atual = atual.filhos[atual.numero];
+                }
+                return atual.chaves[atual.numero - 1];
+            }
+            
+    
         
