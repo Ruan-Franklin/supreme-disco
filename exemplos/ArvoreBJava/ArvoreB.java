@@ -105,6 +105,26 @@ public class ArvoreB{
         
 
     }
+
+    public void mostrar(Pagina pagina){
+        if(pagina != null){
+            for(int i = 0 ; i < pagina.getNumero() ; i++){
+                //Se a página não é uma folha, deve-se chamar o método "mostrar" para o filho no indice 1
+                if(!pagina.getFolha()){
+                    mostrar(pagina.getFilho(1));
+                }
+                //Imprime a chave no indice 1 
+                System.out.println(pagina.getChave(i) + " ");
+            }
+     }
+        //Se a página não é uma folha, deve-se chamar o método "mostrar" para o último filho
+        //Se a página não é uma folha, deve-se chamar o método "mostrar" apra o último filho
+        //Se a página não é uma folha, deve-se chamar o método "mostrar'" para o último filho
+        if(!pagina.getFolha()){
+            mostrar(pagina.getFilho(pagina.getNumero()));
+
+            }
+        }
     
 
     
