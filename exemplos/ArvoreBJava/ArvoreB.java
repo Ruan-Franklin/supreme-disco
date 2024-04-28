@@ -1,6 +1,6 @@
 
 public class ArvoreB{
-    private Pagina raiz;
+    public Pagina raiz;
     private int t; // Grau mínimo da árvore
 
     public ArvoreB(int t){
