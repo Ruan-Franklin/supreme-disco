@@ -162,8 +162,7 @@ public class Pagina{
                         for(int i = 0 ; i < numero ; ++i){                            
                             chaves[i-1] = chaves[i]; //Move todas as chaves após a chave a ser removida uma posição para trás
                         }
-                        numero--; //Decrementa o número de chaves
-                        
+                        numero--; //Decrementa o número de chaves   
                         }
                     else{
                          //SE a chave não é uma folha, substitua a chave pelo predecessor ou sucessor
@@ -204,9 +203,11 @@ public class Pagina{
                                     fundir(indice-1);
                                 }
                             }
-
                         }
-                    }
+                 }
+            }
+            }
+                
 
 
             public int getChaveAntecessora(int indice){
@@ -216,6 +217,97 @@ public class Pagina{
                 }
                 return atual.chaves[atual.numero - 1];
             }
-            
-    
+
+            //Emprestar do anterior
+            public void emprestarDoAnterior(int indice){
+                Pagina filho = filhos[indice];
+                
+                Pagina irmao = filhos[indice-1];
+                //A última chave do irmão vai para a página atual
+                for(int i = filho.numero ; i >= 0 ; i--){
+                    filho.chaves[i+1] = filho.chaves[i];
+;                }
+                //Se a página atual não é folha, move todos os filhos uma posição para frente
+                if(!filho.folha){
+                    for(int i = filho.numero ; i >= 0 ; i--){
+                        filho.filhos[i+1] = filho.filhos[i];
+                       
+                    }
+                }
+                
+                //A última chave de irmao vai para a primeira posição de chaves da página atual                
+                filho.chaves[0] = chaves[indice-1];
+                                
+                //Se a página atual não é folha, move o último filho de irmao como o primeiro filho de filho
+                if(!filho.folha){
+                    filho.filhos[0] = irmao.filhos[irmao.numero];
+                }
+                //Decrementa o número de chaves de irmao
+               
+                irmao.numero--;
+                //Aumenta o número de chaves de filho
+               
+                filho.numero++;
+            }
         
+
+            //Emprestar do próximo
+            public void emprestarDoProximo(int indice){
+                Pagina filho = filhos[indice];
+                Pagina irmao = filhos[indice+1];
+                //A última chave de filho vai para a página atual
+                filho.chaves[filho.numero] = chaves[indice];
+                //A primeira chave de irmao vai para a posição de chaves[indice]
+                chaves[indice] = irmao.chaves[0];
+                //Se irmao não é folha, move todas as chaves uma posição para trás
+                if(!irmao.folha){
+                    for(int i = 0 ; i < irmao.numero -1 ; i++){
+                        irmao.chaves[i] = irmao.chaves[i+1];
+                    }
+                    //Move os filhos uma posição para trás
+                    for(int i = 0 ; i < irmao.numero ; i++){
+                        irmao.filhos[i] = irmao.filhos[i+1];
+                    }
+                }
+                // A primeira chave de irmao vai para a última chave de filho
+
+                if(!filho.folha){
+                    filho.filhos[filho.numero+1] = irmao.filhos[0];
+                }
+                //Decrementa o número de chaves de irmao
+                irmao.numero--;
+            }
+
+            public void fundir(int indice){
+                Pagina filho = filhos[indice];
+                Pagina irmao = filhos[indice + 1];
+                //Puxando a chave da página pai para a última posição das chaves da página filho
+                filho.chaves[t-1] = chaves[indice];
+                //Copiando as chaves da página irmã para a página filho
+                for(int i = 0 ; i < irmao.numero ; i++){
+                    filho.chaves[i+t]  = irmao.chaves[i] ;         
+                }
+                //Copiando os filhos da página irmã para a página filho
+                if(!filho.folha){
+                     for(int i = 0 ; i <= irmao.numero ; i++){
+                        filho.filhos[i+t] = irmao.filhos[i];                   }
+                    }
+                
+                //Movendo todas as chaves na página pai para trás para preencher o espaço vazio.
+                for(int i = indice+1; i < numero ; i++){
+                    chaves[i-1] = chaves[i];
+                }
+                    // Movendo todos os filhos na página pai uma posição para trás
+                
+                //Movendo todos os filhos na posição pai uma página para trás
+                for(int i = indice+2 ; i < numero ; i++){
+                    filhos[i-1] = filhos[i];
+            }
+            //Atualizando o número de chaves na página filho e na página pai
+           
+            filho.numero += irmao.numero+1;
+           //Liberando a memória ocupada pela página irmã
+            numero--;            
+        }
+    }
+           

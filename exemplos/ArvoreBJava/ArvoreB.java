@@ -65,7 +65,7 @@ public class ArvoreB{
         //A chave está na página e a página não é uma folha
         else if(indice >= 0 && !pagina.getFolha()){
             //Substitui a chave pela chave sucessora
-            int chaveSucessora = pagina.getChaveSucessora(indice);
+            int chaveSucessora = pagina.getChaveAntecessora(indice);
             pagina.setChave(indice, chaveSucessora);
             //Remove a chave sucessora da página
             remover(pagina.getFilho(indice + 1), chaveSucessora);
