@@ -31,10 +31,13 @@ public class ArvoreBPlus {
             }
             if (pagina.filhos[i].getNumero() == 2 * t - 1) {
                 pagina.dividirPagina(i, pagina.filhos[i]);
-                
-                
-
-            
+                if(chave > pagina.getChave(i)){
+                    i++;
+                }
     }
+    pagina = pagina.filhos[i];
 }
- 
+    pagina.inserir(chave, dado);
+    }
+ }
+}
