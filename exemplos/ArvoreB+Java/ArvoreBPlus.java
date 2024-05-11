@@ -1,27 +1,40 @@
 public class ArvoreBPlus {
-    private int raiz;
-    
+    private Pagina raiz;
+    private int t;
+
     public ArvoreBPlus(int t){
-        raiz = new Pagina(int t, true);
+        this.raiz = null;
+        this.t = t;
     }
 
-    public void inserir(int chave, Object dado){ throw InsercaoInvalidaExcecao
-        //Se a raiz está cheia, a árvore cresce e aumenta mais um em nível
-
-        if(raiz.getNumero() == 2*raiz.geT() -1){
-            Pagina novaRaiz = new Pagina(raiz.geT(), false)
-            novaRaiz.setPai(null);
-            novaRaiz.dividirPagina();     
-            raiz = novaRaiz;
-            }
+    public void inserir(int chave, Object dado) throw InsercaoInvalidaExcecao{
+        if(raiz == null){
+            raiz = new Pagina(t, true);
             raiz.inserir(chave, dado);
         }
-
-        //Método para buscar chave. Retorna null se a chave não for encontrada.
-
-        public Object buscar(int chave){
-            return raiz.buscaBInaria(chave):
+        else{
+            // Se a raiz estiver cheia, divida-a antes de inserir a nova chave.
+            if(raiz.getNumero() == 2*t - 1){
+                //Nova raiz não é folha, então ela não tem pai.
+                Pagina novaRaiz = new Pagina(t, false);
+                novaRaiz.filhos[0] = raiz;
+                raiz.setPai(novaRaiz);
+                novaRaiz.dividirFilho(0, raiz);
+                raiz = novaRaiz;
         }
-    }
-    
+        Pagina pagina = raiz;
+        while(!pagina.isFolha()){
+            int i = pagina.buscaBinaria(chave);
+            // Se i for negativo, então a chave não está na página.
+            if(i <0){
+                i = -(i+1);
+            }
+            if (pagina.filhos[i].getNumero() == 2 * t - 1) {
+                pagina.dividirPagina(i, pagina.filhos[i]);
+                
+                
 
+            
+    }
+}
+ 
