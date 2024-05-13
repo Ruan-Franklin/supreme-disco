@@ -15,3 +15,4 @@ Estrutura de dados não lineares
 - AVLGH
 - AVR
 - exemplos
+- make test
