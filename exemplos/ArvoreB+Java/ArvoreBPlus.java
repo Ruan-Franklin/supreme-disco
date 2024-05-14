@@ -7,7 +7,7 @@ public class ArvoreBPlus {
         this.t = t;
     }
 
-    public void inserir(int chave, Object dado) throw InsercaoInvalidaExcecao{
+    public void inserir(int chave, Object dado) throws InsercaoInvalidaExcecao{
         if(raiz == null){
             raiz = new Pagina(t, true);
             raiz.inserir(chave, dado);
@@ -40,4 +40,32 @@ public class ArvoreBPlus {
     pagina.inserir(chave, dado);
     }
  }
+    
+        public Object buscar(int chave) throws ArvoreVaziaExcecao{
+            if(raiz == null){
+                throw new ArvoreVaziaExcecao("A árvore está vazia!");
+            }
+            else{
+                return buscar(chave, raiz);
+            }
+        }
+        private Object buscar(Pagina pagina, int chave){
+            int i = pagina.buscaBinaria(chave);
+            
+            if(i>=0){
+                return pagina.getDado(i);
+            }
+            else if(pagina.isFolha()){
+            // Se a chave não está na página e a página é folha, então a chave não está na árvore.
+                throw new ChaveInvalidaExcecao("Chave inválida: a chave não está na árvore");
+        }
+        else{
+            //A chave não está na pagina e a página não é uma folha
+            //Segue para a subárvore apropriada.
+            int indiceFilho = -(i +1);
+            return buscar(pagina.filhos[indiceFilho], chave);
+        }
+        }
+    
+        
 }
