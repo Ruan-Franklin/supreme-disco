@@ -139,17 +139,31 @@ public class ArvoreBPlus {
 
                     if(irmaoEsquerdo != null && irmaoEsquerdo.getNumero() >= t){
                         filho.inserir(pagina.getChave(indiceFilho - 1), pagina.getDado(indiceFilho - 1));
-                        filho.inserir(pagina.getChave(indiceFilho - 1), pagina.getDado(indiceFilho -1));
-                        filho.inserir(pagina.getChave(indiceFilho -1), pagina.getDado(indiceFilho -1));
-                        filho.inserir(pagina.getChave(indiceFilho - 1), pagina.getDado(indiceFilho -1);)
-                        filho.inserir(pagina.getChave(indiceFilho -1), pagina.getDado(indiceFilho - 1);)
-                        filho.inserir(pagina.getChave(indiceFilho -1), chave.getDado(indiceFilho -1);
                         pagina.setChave(indiceFilho - 1, irmaoEsquerdo.getChave(irmaoEsquerdo.getNumero() - 1));
-
+                        pagina.setDado(indiceFIlhoIrmaoEsquerdo -1, irmaoEsquerdo.getDado(irmaoEsquerdo.getNumero() - 1));
+                        irmaoEsquerdo.remover(irmaoEsquerdo.getNumero() -1);
+                    }
+                    else if(irmaoDireito != null && irmaoDireito.getNumero() >= t){
                         
+                        filho.inserir(pagina.getChave(indiceFilho), pagina.getDado(indiceFilho));
+                        pagina.setChave(indiceFilho, irmaoDireito.getChave(0));
+                        pagina.setDado(indiceFilho, irmaoDireito.getDado(0));
+                        irmaoDireito.remover(0);
+                
+                    }
+                    else{
+        
+                        if(irmaoDireito != null){
+                            
+                            filho.fundirComIrmaoDireito(pagina, indiceFilho);
+                        }
+                        else{                            
+                            filho.fundirComIrmaoEsquerdo(pagina, indiceFilho -1);
+                        }
                     }
 
                 }
+                remover(filho, chave);
     
 
         
