@@ -66,6 +66,91 @@ public class ArvoreBPlus {
             return buscar(pagina.filhos[indiceFilho], chave);
         }
         }
+
+        public void remover(int chave) throws RemocaoInvalidaExcecao, ArvoreVaziaExcecao{
+           
+            if(raiz == null){
+                throw new ArvoreVaziaExcecao("A árvore está vazia");
+            }
+            else{
+                //Se a raiz tiver 0 chaves, então  a tornamos a única filha da raiz
+                remover( raiz, chave);
+                if(raiz.getNumero() == 0){
+                    Pagina tmp = raiz;
+                    if(raiz.isFolha()){
+                        raiz = null;
+                    }
+                    else{
+                        raiz = raiz.filhos[0];
+                    }
+                    tmp = null; //Libera a memória
+                }
+            }
+        }
+        private void remover(Pagina pagina, int chave){
+            int i = pagina.buscaBinaria(chave);
+            //Se a chave está na página
+            if(i > 0 ){
+                //Se a página é uma folha
+                if(pagina.isFolha()){ //Remove sem nenhum problema
+                    pagina.remover(i);
+                }
+                else { //A chave está em uma página não folha
+                    
+                    Pagina sucessora = pagina.filhos[i+1];
+                   
+                    while(!sucessora.isFolha()){
+                        sucessora = sucessora.filhos[0];
+
+                   }
+                   
+                   int chaveSucessora = sucessora.getChave(0);
+                   Object dadoSucessor = sucessora.getDado(0);
+                   remover(sucessora, chaveSucessora);
+                   pagina.setChave(i, chaveSucessora);
+                   pagina.setDado(i, dadoSucessor);
+                }
+                else{
+                    if(pagina.isFolha()){
+                        throw new RemocaoInvalidaExcecao("Remoção inválida: a chave não está na árvore");
+                    }                   
+                    int indiceFilho = - (i + 1);
+                    Pagina filho = pagina.filhos[indiceFilho];
+                    if(filho.getNumero() == t -1){
+                        Pagina irmaoEsquerdo = null;
+                        Pagina irmaoDireito = null;
+
+                    }
+                    if( filho.getNumero() == t -1){
+                        Pagina irmaoEsquerdo = null;
+                    }
+                
+                    
+                    if(indiceFilho > 0 ){
+                        irmaoEsquerdo = pagina.filhos[indiceFilho -1];
+
+                    }
+                   
+                    
+                    if(indiceFilho < pagina.getNumero()){
+                        irmaoDireito = pagina.filhos[indiceFilho + 1];
+
+                    }
+
+                    if(irmaoEsquerdo != null && irmaoEsquerdo.getNumero() >= t){
+                        filho.inserir(pagina.getChave(indiceFilho - 1), pagina.getDado(indiceFilho - 1));
+                        filho.inserir(pagina.getChave(indiceFilho - 1), pagina.getDado(indiceFilho -1));
+                        filho.inserir(pagina.getChave(indiceFilho -1), pagina.getDado(indiceFilho -1));
+                        filho.inserir(pagina.getChave(indiceFilho - 1), pagina.getDado(indiceFilho -1);)
+                        filho.inserir(pagina.getChave(indiceFilho -1), pagina.getDado(indiceFilho - 1);)
+                        filho.inserir(pagina.getChave(indiceFilho -1), chave.getDado(indiceFilho -1);
+                        pagina.setChave(indiceFilho - 1, irmaoEsquerdo.getChave(irmaoEsquerdo.getNumero() - 1));
+
+                        
+                    }
+
+                }
     
+
         
 }
