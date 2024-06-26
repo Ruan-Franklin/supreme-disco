@@ -118,15 +118,21 @@ public class AVL extends  ABP {
                 noAtual.getFilhoDireito().setPai(noAtual.getPai());
                 noAtual.setPai(noAtual.getFilhoDireito());
                 noAtual.setFilhoDireito(novoNo);
-
-
-
-            }
-
+		noAtual.getPai().setFilhoEsquerdo(noAtual);
+            }else{
+	       if(noAtual.getFatorBalanceamento() == -2 || noAtual.getFatorBalanceamento() == 1){
+		 noAtual.getPai.setFilhoDireito(noAtual.getFilhoDireito());
         }
-
-
+	      else{
+		noAtual.getPai().setFilhoEsquerdo(noAtual.getFilhoDireito());
+	      }
+	      noAtual.getFilhoDireito().setPai(noAtual.getPai());
+	      noAtual.setPai(noAtual.getFilhoDireito());
+	      noAtual.setFilhoDireito(null);
+	      noAtual.getPai().setFilhoEsquerdo(noAtual);
     }
+	}
+	fatorBalanceamentoRotacaoEsquerda(noAtual, noAtual.getPai());
 
     public void fatorBalanceamentoRotacaoDireita(No noB, No noA) {
         noB.setFatorBalanceamento(noB.getFatorBalanceamento() - 1 - Math.max(noA.getFatorBalanceamento(), 0));
