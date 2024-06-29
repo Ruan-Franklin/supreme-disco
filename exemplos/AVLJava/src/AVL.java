@@ -145,4 +145,42 @@ public class AVL extends  ABP {
         noA.setFatorBalanceamento(noA.getFatorBalanceamento() + 1 + Math.max(noB.getFatorBalanceamento(), 0));
     }
 
+    public No busca(Object elemento){
+      No noAtual = super.busca(elemento, raiz);
+      return noAtual;
+
+    }
+   
+    public No remover(Object elemento) throws RemocaoInvalidaExcecao{
+       No noRemovido = busca(elemento);
+       if(noRemovido.getElemento() != elemento){
+         throw new RemocaoInvalidaExcecao("O elemento" + elemento +" não foi encontrado na árvore.");                      
+      }
+      if(ehRaiz(noRemovido)){
+        noRemovido.setElemento(null);
+        System.out.println("Esta árvore está vazia!");
+        return noRemovido;               
+        }
+     if(ehExterno(removido){
+       No Pai = removido.getPai();     
+       //Nó esquerdo removido
+       if((int)noRemovido.getElemento() < (int) noRemovido.getPai().getElemento()){
+          while(pai != super.raiz && pai.getFatorBalanceamento() != 2 && pai.getFatorBalanceamento() != 0  || pai != super.raiz && pai.getFatorBalanceamento() != -2 && pai.getFatorBalanceamento !=0){
+            pai.setFatorBalanceamento(pai.getFatorBalanceamento() -1);
+            if(pai.getFatorBalanceamento() == 2 || pai.getFatorBalanceamento() == -2){
+              pai.getPai().setFatorBalanceamento(pai.getPai().getFatorBalanceamento() +1);
+              break;
+              }
+              pai = pai.getPai();
+              }
+              if(pai == super.raiz);
+                pai.setFatorBalanceamento(pai.getFatorBalanceamento() -1);  
+                }
+              noRemovido.getPai().setFilhoEsquerdo(null);
+              if(pai.getFatorBalanceamento() == -2){
+                 rotacaoSimplesERemove(pai);
+                }
+           }                
+}
+
 }
