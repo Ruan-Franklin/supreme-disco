@@ -151,36 +151,139 @@ public class AVL extends  ABP {
 
     }
    
-    public No remover(Object elemento) throws RemocaoInvalidaExcecao{
-       No noRemovido = busca(elemento);
+    public No remover(Object elemento) throw RemocaoInvalidaExceccao{
+       No noRmovido = busca(elemento)
        if(noRemovido.getElemento() != elemento){
-         throw new RemocaoInvalidaExcecao("O elemento" + elemento +" não foi encontrado na árvore.");                      
-      }
-      if(ehRaiz(noRemovido)){
-        noRemovido.setElemento(null);
-        System.out.println("Esta árvore está vazia!");
-        return noRemovido;               
-        }
-     if(ehExterno(removido){
-       No Pai = removido.getPai();     
-       //Nó esquerdo removido
-       if((int)noRemovido.getElemento() < (int) noRemovido.getPai().getElemento()){
-          while(pai != super.raiz && pai.getFatorBalanceamento() != 2 && pai.getFatorBalanceamento() != 0  || pai != super.raiz && pai.getFatorBalanceamento() != -2 && pai.getFatorBalanceamento !=0){
-            pai.setFatorBalanceamento(pai.getFatorBalanceamento() -1);
-            if(pai.getFatorBalanceamento() == 2 || pai.getFatorBalanceamento() == -2){
-              pai.getPai().setFatorBalanceamento(pai.getPai().getFatorBalanceamento() +1);
-              break;
-              }
-              pai = pai.getPai();
-              }
-              if(pai == super.raiz);
-                pai.setFatorBalanceamento(pai.getFatorBalanceamento() -1);  
-                }
-              noRemovido.getPai().setFilhoEsquerdo(null);
-              if(pai.getFatorBalanceamento() == -2){
-                 rotacaoSimplesERemove(pai);
-                }
-           }                
-}
+         throw new RemocaoInvalidaExcecao("O elemento " + elemento + "não está na árvore!");
+         }
+       if(ehRaiz(noRemovido){
+         noRemovido.setElemento(null);
+         System.out.println("A árvore está vazia porque a raíz fok removida.");
+         return noRemovido;
+         }
+       if(ehExterno(noRemovido){
+         noPai = noRemovido.getPai();
+         //Nó esquerdo removido
+         if((int) noRemovido.getElemento() < (int) noRemovido.getPai().getElemento()){
+           while(pai != super.raiz && pai.getFatorBalanceamento != 2 && pai.getFatorBalanceamento() != 0 || pai != super.raiz && pai.getFatorBalanceamento != -2 && pai.getFatorBalanceamento() != 0){
+             pai.getPai()pai.setFatorBalanceamento(pai.getFatorBalanceamento() -1);
+             if(pai.getFatorBalanceamento() == -2 || pai.getFatorBalanceamento == 2){
+               pai.getPai().setFatorBalanceamento(pai.getFatorBalanceamento() + 1);
+               break;
+               }
+             pai=pai.getPai();
+             if(pai == super.raiz){
+               pai.setFatorBalanceamento(pai.getFatorBalanceamento() -1);
+               }
+             noRemovido.getPai().setFilhoEsquerdo(null);
+             if(pai.getFatorBalanceamento() == -2){
+               rotaSimplesERemove(pai);
+             }
+             }
+             else{
+               //Nó direito removido
+               while(pai != super.raiz && pai.getFatorBalanceamento() == 2 && pai.getFatorBalanceamento() == 0 || pai != super.raiz && pai.getFatorBalanceamento() == -2 || pai.getFatorBalanceamento() == 0){
+                 pai.setFatorBalanceamento(pai.getFatorBalanceamento() + 1);
+                 if(pai.getFatorBalanceamento() == -2 || pai.getFatorBalanceamento() == 2){
+                   pai.getPai().setFatorBalanceamento(pai.getPai().getFatorBalanceamento() -1);
+                   break;
+                 }
+                 pai = pai.getPai();
+                 }
+                 mostrarArvore();
+                 if(pai==super.raiz){
+                   pai.setFatorBalanceamento(pai.getFatorBalanceamento() + 1);
+                   noRemovido.getPai().setFilhoDireito(null);
+                   if(pai.getFatorBalanceamento() == 2){
+                     rotaSimplesDRemove(pai);
+                     }
+                   pai = noRemovido;
+                   }
+                   tamanho --;
+                   return noRemovido;
+                   }
+                   }
+     public void rotaSimplesERemove(No no){
+        if(no == super.raiz){
+          if(no.getFilhoDireito().getFIlhoEsquerdo() != null){
+             No novoNo = new No(no.getFilhoDireito().getFilhoEsquerdo().getElemento(), no);
+             no.getPai().setPai(null);
+             super.raiz = no.getPai();
+             no.getFilhoDireito().setFilhoEsquerdo(no);
+             no.setFilhoDireito(novoNo);
+             }
+          else{
+            no.getFilhoDireito().setFilhoEsquerdo(no);
+            no.setPai(no.getFilhoDireito());
+            super.raiz = no.getFilhoDireito();
+            no.setFilhoDireito(null):
+            }
+        else{
+          if(no.getFilhoDireito().getFilhoEsquerdo() != null){
+            No novoNo = new No(no.getFilhoDireito().getFilhoEsquerdo().getElemento(), no);
+            no.getPai().setFilhoEsquerdo(no.getFilhoDireito());
+            no.getFilhoDireito().setPai(no.getPai());
+            no.setPai(no.getFilhoDireito());
+            no.setFilhoDireito(novoNo);
+            no.getPai().setFilhoEsquerdo(no);
+            }
+         else{
+           if(no.getFatorBalanceamento() == -2){
+             no.getPai().setFilhoDireito(no.getFilhoDireito());
+           }
+           else{
+             no.getPai().setFilhoEsquerdo(no.getFilhoDireito());
+             }
+       no.getFilhoDireito().setPai(no.getPai()
+       no.setPai(no.getFilhoDireito());
+       no.setFilhoDireito(null);
+       }
+       
+       fbRotaEsquerda(no, no.getPai());
+       }
+       }
+       }
+       
+       public void rotaSimplesDRemove(No no){
+         if(no == super.raiz){
+           if(no.getFilhoEsquerdo().getFilhoDireito() !+ null){
+             No novoNo = new No(no.getFilhoEsquerdo().getFilhoDireito().getElemento(), no);
+             no.setPai(no.getFilhoEsquerdo());
+             no.getPai().setPai(null);
+             super.raiz = no.getFilhoEsquerdo());
+             no.getFilhoEsquerdo().setFilhoDireito(no);
+             no.setFilhoEsquerdo(novoNo);
+             }
+           else{
+             no.getFilhoEsquerdo().setFilhoDireito(no);
+             no.setPai(no.getFIlhoEsquerdo());
+             super.raiz = no.getFilhoEsquerdo()
+             no.setFilhoEsquerdo(null);
+             }
+           fbRotaDireita(no, no.getPai());
+           }
+       else{
+         if(no.getFilhoEsquerdo().getFilhoDireito() != null){
+           No novoNo = new No(no.getFilhoDireito().getFilhoEsquerdo(), no);
+           no.getPai().setFilhoEsquerdo(no.getFilhoDireito());
+           no.getFilhoDireito().setPai(no.getPai());
+           no.setPai(no.getFilhoDireito());
+           no.setFilhoDireito(novoNo);
+           no.getPai().setFilhoEsquerdo(no);
+           }
+        else{
+          if(no.getFatorBalanceamento() == -2){
+            no.getPai().setFilhoDireito(no.getFilhoEsquerdo());
+           }
+          else{
+            no.getPai().setFilhoEsquerdo(no.getFIlhoEsquerdo());
+             }
+          no.getFilhoEsquerdo().setPai(no.getPai());
+          no.setPai(no.getFIlhoEsquerdo());
+          no.setFilhoEsquerdo(null);
+          no.getPai().setFIlhoDIreito(no);
+          }
+          fbRotaDireita(no, no.getPai());
+          }
+          }            
 
-}
