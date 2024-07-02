@@ -302,7 +302,30 @@ public class AVL extends  ABP {
           }
           
        return noAtual;
-
+}
+ 	
+      public boolean ehAVL(){
+        return ehAVL(super.raiz);
+        }
+      private boolean ehAVL(No no){
+         if(no == null){
+           return true;
+         }
+         
+         int alturaEsquerda = altura(no.getFilhoEsquerdo());
+         int alturaDireita = altura(no.getFilhoDireito());
+         int fatorDeBalanceamento = alturaEsquerda - alturaDireita;
+         if Math.abs(fatorDeBalanceamento) > 1){
+           return false;
+         }
+         return ehAVL(no.getFilhoEsquerdo() && ehAVL(no.getFilhoDireito());
+         }
+      private int altura(No no){
+         if(no == null){
+           return 0;
+           }
+         return 1 + Math.max(altura(no.getFilhoEsquerdo(), altura(no.getFilhoDireito())));
+         }
 
              
 
