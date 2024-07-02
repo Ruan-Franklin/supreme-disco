@@ -244,6 +244,69 @@ public class AVL extends  ABP {
        }
        }
        
+       public No inserir(Object elemento){
+         No noAtual = super.inserir(elemento);
+         if(noAtual.EhEsquerdo()){
+           noAtual.getPai().setFatorBalanceamento(no.getPai().getFatorBalanceamento() +1);
+           noAtual = noAtual.getPai();
+           }
+         else{
+           noAtual.getPai()no.setFatorBalancamento(no.getPai().getFatorBalanceamento() -1);
+           noAtual = noAtual.getPai();
+       }
+        while(noAtual.getFatorBalanceamento() != 0 && noAtual != super.raiz && noAtual.getFatorBalanceamento() != 2 && noAtual.getFatorBalanceamento() != -2){
+           if(noAtual.EhEsquerdo()){
+             noAtual.getPai().setFatorBalanceamento(noAtual.getPai().getFatorBalanceamento() +1);
+           }
+           else{
+             noAtual.getPai().setFatorBalanceamento(no.getPai().getFatorBalanceamento() -1);
+            }
+           noAtual = noAtual.getPai();
+           }
+           if(noAtual.getFatorBalanceamento() == 2 && noAtual.getFilhoEsquerdo() == 1){
+             System.out.println("Rotação simples para a direita");
+             mostrarArvore();
+             System.out.println("-------------------------------------------------");
+             rotaSimplesD(noAtual);
+             mostrarArvore();
+             }
+          else if(noAtual.getFatorBalanceamento() == -2 && noAtual.getFilhoDireito() == -1){
+            System.out.println("Rotação simples para a esquerda");
+            mostrarArvore();
+            System.out.println("-------------------------------------------------");
+            rotaSimplesD(noAtual);
+          }
+          else if(noAtual.getFatorBalanceamento() == 2 && noAtual.getFilhoEsquerdo() == -1){
+             System.out.println("Rotação simples para esquerda e rotação simples para a direita = Rotação dupla para a direita");
+             mostrarArvore();
+             System.out.println("-------------------------------------------------");
+             No noAtual = noAtual.getFilhoEsquerdo();
+             rotacaoSImplesE(noAtual);
+             System.out.println("Elemento: " + noAtual.getElemento());
+             mostrarArvore();
+             rotaSimplesD(noAtual.getPai().getPai());
+             mostrarArvore();
+             
+             }
+        else if(noAtual.getFatorBalanceamento() == -2 && noAtual.getFilhoDireito() == 1){
+          System.out.println("Rotação simples para a direita + rotação  simples para a direita = rotação dupla para a direita");
+          mostrarArvore();
+          System.out.println("-------------------------------------------------");
+          System.out.println("Elemento: " + noAtual.getElemento());
+          noAtual = noAtual.getFIlhoDireito());
+          rotaSImplesD(noAtual);
+          mostrarArvore();
+          System.out.println("-------------------------------------------------");
+          rotaSImplesE(noAtual.getPai().getPai());
+          mostrarArvore();
+          }
+          
+       return noAtual;
+
+
+             
+
+             
        public void rotaSimplesDRemove(No no){
          if(no == super.raiz){
            if(no.getFilhoEsquerdo().getFilhoDireito() !+ null){
