@@ -53,5 +53,20 @@ public class ABP{
    }
    return noAtual;
   }
+  public No inserir(Object elemento){
+    No noProcurado = busca(elemento, raiz);
+    No novoNo = new No(elemento, noProcurado);
+    //Inserindo no à esquerda
+    if((int) elemento < (int) noProcurado.getElemento()){
+      noProcurado.setFilhoEsquerdo(novoNo);  
+  }
+  //Inserindo nó à direita
+    else{
 
+      noProcurado.setFilhoDireito(novoNo);
+    }
+    tamanho++;
+    return novoNo;
+  }
 
+ 
