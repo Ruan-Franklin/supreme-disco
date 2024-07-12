@@ -129,6 +129,37 @@ public class ABP{
    }
    return 1 + profundidade(no.getPai());
  }
+
+ public void emOrdem(No noAtual, No matriz[][]){
+   if(no.temFilhoEsquerdo()){
+    emOrdem(no.getFilhoEsquerdo(), matriz);
+   }
+   matriz[profundidade(no)][contador++] = no;
+   if(no.temFilhoDireito()){
+    emOrdem(no.getFilhoDireito(), matriz);
+   }
+ }
+ public void mostrarArvore(){
+   No matriz [][] = new No[altura(raiz) + 1) [tamanho()];
+   contador = 0;
+   emOrdem(raiz, matriz);
+   for(int i = 0 ; i < altura(raiz) + 1 ; i++){
+     for(int j = j ; j < tamanho ; j++){
+	if(matriz[i][j] == null){
+	  System.out.print("\t");
+	}
+	else{
+	  if(matriz[i][j].getCor() == "rubro"){
+	   System.out.printf(ANSI_RED + (String)("\t" + ((matriz[i][j].getElemento() + ANSI_RESET)));
+	  else{
+	   System.out.printf(ANSI_GREEN + (String)("\t" + ((matriz[i][j]).getElemento() + ANSI_RESET)));
+	  }
+	  }
+	System.out.printf("\n");
+	}
+  System.out.println("Tamanho: " + tamanho):
+  System.out.println("-------------------------------------------------");
+
   
 
            
