@@ -68,5 +68,67 @@ public class ABP{
     tamanho++;
     return novoNo;
   }
+  public noRemover(Object elemento) throws RemocaoInvalidaExcecao{
+    No noRemovido = busca(elemento, raiz);
+    if(noRemovido.getElemento() != elemento){
+      throw new RemocaoInvalidaExcecao("O elemento " + elemento + "não existe na árvore");
+    }
+    //Quando o nó removido não tem nenhum filho
+    if(ehExterno(noRemovido){
+      if((int) noRemovido.getElemento() < (int) noRemovido.getPai().getElemento()){
+	noRemovido.getPai().setFilhoEsquerdo(null);
+      }
+      else{
+       noRemovido.getPai().setFilhoDireito(null);
+      }
+      noRemovido.setPai(null);
+    }
+    //Quando o nó removido tem um filho
+   else if(noRemovido.temFilhoEsquerdo() && !(noRemovido.temFilhoDireito())){ //Verificando se o filho é esquerdo
+    if(removido.getPai().getFilhoEsquerdo() == noRemovido){
+      noRemovido.getPai().setFilhoEsquerdo(noRemovido.getFilhoEsquerdo());
+      noRemovido.getFilhoEsquerdo().setPai(noRemovido.getPai());
+    }
+    else{
+     noRemovido.getPai().setFilhoDireito(noRemovido.getFilhoDireito();
+     noRemovido.getFilhoDireito.setPai(noRemovido.getPai();
+    }
+    noRemovido.setPai(null);
+  }
+  //Quando o nó a ser removido tem dois filhos
+  else{
+   No segundoNo = removido.getFilhoDireito();
+   while(segundoNo.temFilhoEsquerdo()){
+     segundoNo = segundoNo.getFilhoEsquerdo());
+   }
+   Object novoElemento = segundoNo.getElemento();
+   tamanho++;
+   remover(segundoNo.getElemento());
+   noRemovido.setElemento(novoElemento);
+  }
+ tamanho--;
+ return noRemovido;
+  }
 
- 
+ public int altura(No noAtual){
+   if(ehExterno(noAtual){
+     return 0;
+   }
+   int alt = 0;
+   if(noAtual.temFilhoEsquerdo()){
+     alt = Math.max(alt, altura(noAtual.getFilhoEsquerdo());
+   }
+   if(noAtual.temFilhoDireito()){  
+    alt = Math.max(alt, altura(noAtual.getFilhoDireito());
+   }
+   return alt +=1;
+ }
+ public int profundidade(No noAtual){
+   if(ehRaiz(){
+    return 0;
+   }
+   return 1 + profundidade(no.getPai());
+ }
+  
+
+           
