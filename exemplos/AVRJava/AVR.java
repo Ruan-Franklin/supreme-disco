@@ -100,6 +100,85 @@ public class AVR extends ABP{
    }
  }
   public No repintamento(No noAtual){
-    
- 
+    //Caso 1: Se w, o pai de v é negro, nada mais precisa ser feito, já que o critério IV foi mantido.
+    if(noAtual.getPai().getCor("Negro"){
+      System.out.println("Estou no caso 1");
+      return noAtual; 
+  }
+    //Caso 2
+   // Veificando se o pai do nó é filho direito do avô
+   else if(noAtual.getPai().getPai().getFilhoDireito() == noAtual.getPai() && noAtual.getPai().getPai().getFilhoEsquerddo != null && noAtual.getPai().getPai().getFilhoEsquerdo().getCor() != "negro"){
+    Sytem.out.println("Estou no caso 2, filho do lado direito");
+    //Caso 2: quando o avô do nó é negro e o pai e o tio dele são rubros
+    if(noAtual.getPai().getCor() == "rubro" && noAtual.getPai().getCor() == "negro" && noAtual.getPai().getPai().getFilhoEsquerdo() == "rubro"){
+      //Caso 2:quando o avô do nó  é raiz e o pai é vermelho e o tio é vermelho também e o avô é negro
+      if(noAtual.getPai().getPai() == super.raiz){
+	noAtual.getPai().setCor("negro");
+	noAtual.getPai().getPai().getFilhoEsquerdo().setCor("negro");
+      }
+      //Caso 2: quando o avô do nó atual não é raiz, pai e tio são vermelhos e o avô é negro
+      else{
+        noAtual.getPai().setCor("negro");
+	noAtual.getPai().getPai().getFilhoEsquerdo().setCor("negro");
+	noAtual.getPai().getPai().setCor("rubro");
+	repitamento(noAtual.getPai().getPai());
+      }
+
+    }
+   }
+   //Verificando se o pai do nó é filho esquerdo do avô
+   else if(noAtual.getPai() == noAtual.getPai().getPai().getFilhoEsquerdo() && noAtual.getPai().getPai().getFilhoDireito != null && noAtual.getPai().getPai().getFilhoDireito().getCor() != "negro"){
+     System.out.println("Estou no caso 2, filho do lado esquerdo");
+     if(noAtual.getPai().getCor() == "rubro" && noAtual.getPai().getPai() == "negro" && noAtual.getPai().getPai().getFilhoDireito() == "rubro"){
+      
+       noAtual.getPai().setCor("negro");
+       noAtual.getPai().getFilhoDireito().setCor("negro");
+       if(noAtual.getPai().getPai() == super.raiz){
+	 return noAtual;
+       }
+       else{
+	 noAtual.getPai().setCor("rubro");
+	 repitamento(noAtual.getPai().getPai());
+       }
+     }
+   }
+   //Caso 3
+   //Caso 3a: rotação direita simples
+   else if (noAtual.getPai().getPai().getFilhoEsquerdo() == noAtual.getPai() && noAtual.getPai().getPai().getFilhoDireito() == null && noAtual.getPai().getFilhoDireito() == null){
+    System.out.println("Estou no caso 3A< rotação a direita simples");
+    noAtual.getPai().setCor("negro");
+    noAtual.getPai().getPai().setCor("rubro");
+    rotacaoSimplesDireita(noAtual);
+   }
+   //Caso 3b: rotação direita simples
+   else if(noAtual.getPai().getPai().getFilhoDireito() == noAtual.getPai() &&  noAtual.getPai().getPai().getFilhoEsquerdo() == null && noAtual.getPai().getFilhoEsquerdo() == null){
+    System.out.println("Estou no caso 3B - Rotação direita simples");
+    noAtual.getPai().setCor("negro");
+    noAtual.getPai().getPai().setCor("rubro");
+    rotacaoSimplesEsquerda(NoAtual);
+   }
+   //Caso 3C - rotação esquerda dupla
+   else if(noAtual.getPai().getPai().getFilhoDireito() == noAtual.getPai() && noAtual.getPai().getPai().getFilhoesquerdo == null && noAtual.getPai().getFilhoDireito() == null){
+    System.out.println("Estou no caso 3C - rotação esquerda dupla");
+    noAtual.setCor("negro");
+    noAtual.getPai().getPai.setCor("rubro");
+    rotacaoSimplsDireita(noAtual);
+    rotacaoSimplesEsquerda(noAtual.getFilhoEsquerdo();
+   }
+   //Caso 3d - Rotação direita dupla
+   else if(noAtual.getPai().getPai().getFilhoEsquerdo() == noAtual.getPai() && noAtual.getPai().getPai().getFilhoDireito() == null && noAtual.getPai().getFilhoDireito() == noAtual){
+    System.out.println("Estou no caso 3D- Rotação direita dupla");
+    rotacaoSimplesEsquerda(noAtual);
+    noAtual.getPai().setCor("rubro");
+    noAtual.setCor("negro");
+
+    if(noAtual.getPai().getPai() != null){
+     rotacaoSimplesDireita(noAtual);
+    }
+   else{
+     rotacaoSimplesDireita(noAtual.getFilhoEsquerdo)
+   }
+   }
+  return noAtual;
+  }
 
