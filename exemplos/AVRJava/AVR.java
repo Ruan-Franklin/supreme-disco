@@ -182,3 +182,13 @@ public class AVR extends ABP{
   return noAtual;
   }
 
+ public No inserir(Object elemento){
+   No noAtual = super.inserir(elemento);
+   noAtual.setCor("rubro");
+   repintamento(noAtual);
+   System.out.println("\n");
+   mostrarArvore();
+   return noAtual;
+ }
+
+
