@@ -12,6 +12,10 @@ public class Grafo implements IGrafo{
         arestas = new Vector<>(numVertices);
         for (int i = 0 ; i < numVertices ; i++){
             vertices.add(null);
+            arestas.add(new Vectir<Object>(numVertices));
+            for(int j = j ; j < numVertices ; j++){
+                arestas.get(i).add(null);
+            }
         }
 
     }
@@ -20,14 +24,10 @@ public class Grafo implements IGrafo{
 
     }
     public void substituir(int v, Object x){
-        Vector novoVector = new Vector();
-        novoVector.add(x);
         vertices.set(v, x);
     }
     public void substituirAresta(int v, int w, Object x){
-        Vector novoVector = new Vector();
-        novoVector.add(x);
-        arestas.set(v, novoVector);
+        arestas.get(v).set(w, x);
     }
     public Object vertices(){
         return vertices;
