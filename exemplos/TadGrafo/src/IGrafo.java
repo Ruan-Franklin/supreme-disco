@@ -1,3 +1,5 @@
+import java.util.Vector;
+
 /**
  * Interface que define os métodos que um grafo deve implementar.
  */
@@ -69,12 +71,12 @@ public interface IGrafo {
      * Retorna uma coleção de todos os vértices no grafo
      * @return coleção de vértices
      */
-    public Object vertices();
+    public Vector <Vertice> vertices();
     /**
      * Retorna uma coleção de todas as arestas no grafo
      * @return coleção de arestas
      */
-    public Object arestas();
+    public Vector <Vector <Vector <Aresta>>> arestas();
     /**
      * Testa se a aresta é direcionada
      * @param e aresta
