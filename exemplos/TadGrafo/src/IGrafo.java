@@ -27,13 +27,13 @@ public interface IGrafo {
      * @param v vértice
      * @param x elemento
      */
-    public void substituir(int v, Object x);
+    public void substituir(Vertice v, Object x);
     /**
      * Substitui o elemento armazenado na aresta e por x
      * @param e aresta
      * @param x elemento
      */
-    public void substituirAresta(int e, Object x);
+    public void substituirAresta(Aresta e, Object x);
     /**
      * Insere e retorna um novo vértice, armazenando um elemento o
      * @param o elemento
@@ -89,7 +89,7 @@ public interface IGrafo {
      * @param w vértice
      * @param o elemento
      */
-    public void inserirArestaDirecionada(int v, int w, Object o);
+    public void inserirArestaDirecionada(Aresta v, int w, Object o);
 
 
 }
