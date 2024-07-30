@@ -20,9 +20,11 @@ public class Grafo implements IGrafo{
             arestas.add(linha);
         }
     }
+    @Override
     public boolean ehAjacente(int v, int w){
         return adj[v][w];
     }
+    @Override
     public int[] finalVertices(int e) throws NaoIncidente{
         int [] v = new int[2];
         for (int i = 0 ; i < numVertices ; i++) {
@@ -36,19 +38,23 @@ public class Grafo implements IGrafo{
         }
         throw new NaoIncidente("Aresta não incidente");
     }
+    @Override
     public void substituir(Vertice v, Object x){
         vertices.set(v, x);
     }
+    @Override
     public void substituirAresta(Aresta e,  Object x){
         arestas.get(e).set(e, x);
     }
+    @Override
     public Vector <Vertice> vertices(){
         return vertices;
     }
+    @Override
     public Vector <Vector <Vector <arestas>>> arestas(){
         return arestas;
     }
-
+    @Override
    public int inserirAresta(int v, int w, Object o){
     arestas.get(v).set(w, o);
     arestas.get(w).set(v, o);
@@ -57,7 +63,7 @@ public class Grafo implements IGrafo{
     numArestas++;
     return numArestas;
    }
-
+   @Override 
     public int inserirVertice(Object o){
         for(int i = 0 ; i < numVertices ; i++){
             if(vertices.get(i) == null){
@@ -68,13 +74,14 @@ public class Grafo implements IGrafo{
         numVertices++;
         return numVertices;
     }
-
+    @Override
     public boolean ehDirecionado(int e){
         if(arestas.get(finalVertices(e)[0]).get(finalVertices(e)[1]).get(0).equals(e)){
             return true;
         }
         return false;
     }
+    @Override
     public int oposto(Vertice v, int e) throws NaoIncidente{
         if(finalVertices(e)[0] == v){
             return finalVertices(e)[1];
@@ -84,10 +91,17 @@ public class Grafo implements IGrafo{
         }
         throw new NaoIncidente("O vértice não é incidente");
     }
+    @Override
     public void inserirArestaDirecionada(int v, int w, Object o){
         arestas.get(v).set(w, o);
         adj [v][w] = true;
         numArestas++;
+    }
+    public void mostrar(){
+        for(int i = 0 ; i < numVertices ; i++){
+            System.out.print(arestas.get(i).get(j) + " ");
+        }
+        System.out.println();
     }
 
 }
