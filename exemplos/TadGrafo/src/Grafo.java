@@ -1,28 +1,33 @@
 import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 public class Grafo implements IGrafo{
     private int numVertices;
     private int numArestas;
     private Vector<Vertice> vertices;
     private Vector<Vector<Aresta>> arestas;
-    private Vector <Vector<Aresta>>[][] adj;
+    private Vector<Vector<List<Aresta>>> adj;
     public Grafo(int numVertices){
         this.numVertices = numVertices;
         this.numArestas = 0;
         vertices = new Vector<>(numVertices);
         arestas = new Vector<>(numVertices);
-        this.adj = new Vector[numVertices][numVertices];
+        adj = new Vector<>(numVertices);
         for (int i = 0 ; i < numVertices ; i++){
             vertices.add(null);
-            Vector<Vector<Aresta>> linha = new Vector<>(numVertices);
-            for(int j = 0 ; j < numVertices ; j++) {
-                linha.add(new Vector<Aresta>());
+            Vector<Aresta> linhaArestas = new Vector<>(numVertices);
+            Vector<List<Aresta>> linhaAdj = new Vector<>(numVertices);
+            for(int j = 0 ; j < numVertices ; j ++){
+                linhaArestas.add(null);
+                linhaadj.add(new Araylist<>());
             }
-            arestas.add(linha);
+            arestas.add(linhasArestas);
+            adj.add(linhaAdj); 
         }
     }
     @Override
     public boolean ehAjacente(int v, int w){
-        return adj[v][w];
+        return !adj.get(v).get(w).isEmpty();
     }
     @Override
     public int[] finalVertices(int e) throws NaoIncidente{
@@ -44,7 +49,17 @@ public class Grafo implements IGrafo{
     }
     @Override
     public void substituirAresta(Aresta e,  Object x){
-        arestas.get(e).set(e, x);
+        for(int i = 0 ; i < numVertices ; i++){
+            for(int j = 0 ; j < numVertices ; j++){
+                List<Aresta> listaArestas = adj.get(i).get(j);
+                for(int k  = 0 ; k < listaArestas.size() ; k++){
+                    if(listaArestas.get(k).equals(e)){
+                        listaAresta.set(k, (Aresta) x);
+                        return;
+                    }
+                }
+            }
+        }
     }
     @Override
     public Vector <Vertice> vertices(){
@@ -56,12 +71,11 @@ public class Grafo implements IGrafo{
     }
     @Override
    public int inserirAresta(int v, int w, Object o){
-    arestas.get(v).set(w, o);
-    arestas.get(w).set(v, o);
-    adj[v][w] = true;
-    adj[w][v] = true;
+    Aresta aresta = (Aresta) o;
+    adj.get(v).get(w).add(aresta);
     numArestas++;
     return numArestas;
+
    }
    @Override 
     public int inserirVertice(Object o){
@@ -76,25 +90,37 @@ public class Grafo implements IGrafo{
     }
     @Override
     public boolean ehDirecionado(int e){
-        if(arestas.get(finalVertices(e)[0]).get(finalVertices(e)[1]).get(0).equals(e)){
-            return true;
+        for(int i = 0 ; i < numVertices ; i++){
+            for(int j = 0 ; j < 0 ; j++){
+                for ( Aresta aresta : adj.get(i).get(j)){
+                    if(aresta.equals(e)){
+                        return true;
+                    }
+                }
+            }
         }
         return false;
     }
     @Override
     public int oposto(Vertice v, int e) throws NaoIncidente{
-        if(finalVertices(e)[0] == v){
-            return finalVertices(e)[1];
-        }
-        if(finalVertices(e)[1] == v){
-            return finalVertices(e)[0];
-        }
+        for(int i = 0 ; i < numVertices ; i++){
+            for(int j = 0 ; j < numVertices ; j++){
+                for(Aresta aresta : adj.get(i).get(j)){
+                    if(i == v){
+                        return j;
+                    }
+                    else if(j == v){
+                        return i;
+                    }
+                    }
+                }
+            }
         throw new NaoIncidente("O vértice não é incidente");
     }
     @Override
     public void inserirArestaDirecionada(int v, int w, Object o){
-        arestas.get(v).set(w, o);
-        adj [v][w] = true;
+        Aresta aresta = (Aresta) o;
+        adj.get(v).get(w).add(aresta);
         numArestas++;
     }
     public void mostrar(){
