@@ -7,26 +7,28 @@ public class Grafo implements IGrafo{
     private Vector<Vertice> vertices;
     private Vector<Vector<Aresta>> arestas;
     private Vector<Vector<List<Aresta>>> adj;
-    public Grafo(int numVertices){
+    public Grafo(int numVertices) {
         this.numVertices = numVertices;
         this.numArestas = 0;
         vertices = new Vector<>(numVertices);
         arestas = new Vector<>(numVertices);
         adj = new Vector<>(numVertices);
-        for (int i = 0 ; i < numVertices ; i++){
+        for (int i = 0; i < numVertices; i++) {
             vertices.add(null);
             Vector<Aresta> linhaArestas = new Vector<>(numVertices);
             Vector<List<Aresta>> linhaAdj = new Vector<>(numVertices);
-            for(int j = 0 ; j < numVertices ; j ++){
+            for (int j = 0; j < numVertices; j++) {
                 linhaArestas.add(null);
-                linhaadj.add(new Araylist<>());
+                linhaAdj.add(new ArrayList<>());
             }
-            arestas.add(linhasArestas);
-            adj.add(linhaAdj); 
+            arestas.add(linhaArestas);
+            adj.add(linhaAdj);
         }
     }
+
+
     @Override
-    public boolean ehAjacente(int v, int w){
+    public boolean ehAdjacente(int v, int w){
         return !adj.get(v).get(w).isEmpty();
     }
     @Override
@@ -44,30 +46,39 @@ public class Grafo implements IGrafo{
         throw new NaoIncidente("Aresta não incidente");
     }
     @Override
-    public void substituir(Vertice v, Object x){
-        vertices.set(v, x);
+    public void substituir(Vertice v, Object x) {
+        // int index = vertices.indexOf(v);
+        int index = vertices.indexOf(v);
+        if (index != -1) {
+            vertices.set(index, (Vertice) x);
+        }
     }
+
     @Override
-    public void substituirAresta(Aresta e,  Object x){
-        for(int i = 0 ; i < numVertices ; i++){
-            for(int j = 0 ; j < numVertices ; j++){
+    public void substituirAresta(Aresta e,  Object x) {
+
+        for (int i = 0; i < numVertices; i++) {
+            for (int j = 0; j < numVertices; j++) {
                 List<Aresta> listaArestas = adj.get(i).get(j);
-                for(int k  = 0 ; k < listaArestas.size() ; k++){
-                    if(listaArestas.get(k).equals(e)){
-                        listaAresta.set(k, (Aresta) x);
+                for (int k = 0; k < listaArestas.size(); k++) {
+                    if (listaArestas.get(k).equals(e)) {
+                        listaArestas.set(k, (Aresta) x);
                         return;
                     }
                 }
             }
         }
     }
+
+
+
     @Override
     public Vector <Vertice> vertices(){
         return vertices;
     }
     @Override
-    public Vector <Vector <Vector <arestas>>> arestas(){
-        return arestas;
+    public Vector<Vector<List<Aresta>>> arestas(){
+        return adj;
     }
     @Override
    public int inserirAresta(int v, int w, Object o){
@@ -77,16 +88,17 @@ public class Grafo implements IGrafo{
     return numArestas;
 
    }
-   @Override 
+    @Override
     public int inserirVertice(Object o){
         for(int i = 0 ; i < numVertices ; i++){
             if(vertices.get(i) == null){
-                vertices.set(i, o);
+                vertices.set(i, (Vertice) o);
                 return i;
             }
         }
         numVertices++;
-        return numVertices;
+        vertices.add((Vertice) o);
+        return numVertices -1;
     }
     @Override
     public boolean ehDirecionado(int e){
@@ -102,19 +114,23 @@ public class Grafo implements IGrafo{
         return false;
     }
     @Override
-    public int oposto(Vertice v, int e) throws NaoIncidente{
+    public int oposto(Vertice v, int e){
         for(int i = 0 ; i < numVertices ; i++){
             for(int j = 0 ; j < numVertices ; j++){
-                for(Aresta aresta : adj.get(i).get(j)){
-                    if(i == v){
-                        return j;
-                    }
-                    else if(j == v){
-                        return i;
-                    }
+                //                for (Aresta aresta : adj.get(i).get(j)) {
+                for (Aresta aresta : adj.get(i).get(j)){
+                    if(aresta.equals(e)){
+                        //                        if (vertices.get(i).equals(v)) {
+                        if(vertices.get(i).equals(v)){
+                            return j;
+                        }
+                        else if(vertices.get(j).equals(v)){
+                            return i;
+                        }
                     }
                 }
             }
+        }
         throw new NaoIncidente("O vértice não é incidente");
     }
     @Override
@@ -123,9 +139,26 @@ public class Grafo implements IGrafo{
         adj.get(v).get(w).add(aresta);
         numArestas++;
     }
+    public Object arestasIncidentes(int v){
+        return adj.get(v);
+    }
+
+    public Object removerAresta(Aresta e) throws NaoIncidente{
+        for(int i = 0 ; i < numVertices ; i++){
+            for(int j = 0 ; j < numVertices ; j++){
+                List <Aresta> listaArestas = adj.get(i).get(j);
+                if(listaArestas.remove(e)){
+                    numArestas--;
+                    return e.getValor();
+                }
+            }
+        }
+        throw new ArestaNaoEncontradaExcecao("A aresta " + e + " não foi encontrada");
+    }
+
     public void mostrar(){
         for(int i = 0 ; i < numVertices ; i++){
-            System.out.print(arestas.get(i).get(j) + " ");
+            System.out.print(vertices.get(i) + " ");
         }
         System.out.println();
     }

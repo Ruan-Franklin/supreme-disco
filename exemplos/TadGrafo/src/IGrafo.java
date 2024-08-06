@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.Vector;
 
 /**
@@ -14,7 +15,7 @@ public interface IGrafo {
      * Retorna o vértice oposto de v em e, ou seja, o vértice final da aresta e separado do vértice v.
      * Um erro ocorre se não é incidente a v
      */
-    public int oposto(int v, int e);
+    public int oposto(Vertice v, int e);
     /**
      * Retorna verdadeiro se os vértices v e w são adjacentes
      * @param v vértice
@@ -60,7 +61,7 @@ public interface IGrafo {
      * @param e aresta
      * return elemento
      */
-    public Object removerAresta(int e);
+    public Object removerAresta(Aresta e);
     /**
      * Retorna uma coleção de todas as arestas incidentes sob o vértice V
      * @param v vértice
@@ -76,7 +77,7 @@ public interface IGrafo {
      * Retorna uma coleção de todas as arestas no grafo
      * @return coleção de arestas
      */
-    public Vector <Vector <Vector <Aresta>>> arestas();
+    public Vector<Vector<List<Aresta>>> arestas();
     /**
      * Testa se a aresta é direcionada
      * @param e aresta
@@ -89,7 +90,7 @@ public interface IGrafo {
      * @param w vértice
      * @param o elemento
      */
-    public void inserirArestaDirecionada(Aresta v, int w, Object o);
+    public void inserirArestaDirecionada(int v, int w, Object o);
 
 
 }
