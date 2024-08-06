@@ -47,27 +47,12 @@ public class Grafo implements IGrafo{
     }
     @Override
     public void substituir(Vertice v, Object x) {
-        // int index = vertices.indexOf(v);
-        int index = vertices.indexOf(v);
-        if (index != -1) {
-            vertices.set(index, (Vertice) x);
-        }
+        v.setValor(x);
     }
 
     @Override
     public void substituirAresta(Aresta e,  Object x) {
-
-        for (int i = 0; i < numVertices; i++) {
-            for (int j = 0; j < numVertices; j++) {
-                List<Aresta> listaArestas = adj.get(i).get(j);
-                for (int k = 0; k < listaArestas.size(); k++) {
-                    if (listaArestas.get(k).equals(e)) {
-                        listaArestas.set(k, (Aresta) x);
-                        return;
-                    }
-                }
-            }
-        }
+        e.setValor(x);
     }
 
 
@@ -117,10 +102,8 @@ public class Grafo implements IGrafo{
     public int oposto(Vertice v, int e){
         for(int i = 0 ; i < numVertices ; i++){
             for(int j = 0 ; j < numVertices ; j++){
-                //                for (Aresta aresta : adj.get(i).get(j)) {
                 for (Aresta aresta : adj.get(i).get(j)){
                     if(aresta.equals(e)){
-                        //                        if (vertices.get(i).equals(v)) {
                         if(vertices.get(i).equals(v)){
                             return j;
                         }
