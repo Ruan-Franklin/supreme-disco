@@ -55,7 +55,7 @@ public interface IGrafo {
      * @param v vértice
      * @return elemento
      */
-    public Object removerVertice(int v);
+    public Object removerVertice(Vertice v);
     /**
      * Remove a aresta e e retorna o elemento armazenado
      * @param e aresta
@@ -91,6 +91,4 @@ public interface IGrafo {
      * @param o elemento
      */
     public void inserirArestaDirecionada(int v, int w, Object o);
-
-
 }
