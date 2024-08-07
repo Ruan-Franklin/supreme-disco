@@ -48,7 +48,7 @@ public interface IGrafo {
      * @param o elemento
      * @return aresta
      */
-    public int inserirAresta(int v, int w, Object o);
+    public int inserirAresta(Vertice v, Vertice w, Object o);
 
     /**
      * Remove o vértice v e todas as arestas incidentes e retorna o elemento
