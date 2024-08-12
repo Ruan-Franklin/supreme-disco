@@ -3,12 +3,14 @@ public class Aresta {
     private int id;
     private int v1;
     private int v2;
+    private boolean direcionada;
 
-    public Aresta(int id, int v1, int v2,Object valor){
+    public Aresta(int id, int v1, int v2,Object valor, boolean direcionada){
         this.id = id;
         this.v1 = v1;
         this.v2 = v2;
         this.valor = valor;
+        this.direcionada = direcionada;
     }
     public Object getValor(){
         return valor;
@@ -33,5 +35,8 @@ public class Aresta {
     }
     public void setV2(int v2){
         this.v2 = v2;
+    }
+    public boolean isDirecionada(){
+        return direcionada;
     }
 }

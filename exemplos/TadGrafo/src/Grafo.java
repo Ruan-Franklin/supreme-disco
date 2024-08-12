@@ -1,4 +1,5 @@
 import java.util.*;
+
 public class Grafo implements IGrafo {
     private Map<Integer, Vertice> vertices;
     private Map<Integer, Aresta> arestas;
@@ -15,8 +16,8 @@ public class Grafo implements IGrafo {
     }
 
     @Override
-    public int[] finalVertices(int e) throws ArestaNaoEncontradaExcecao{
-        if(!arestas.containsKey(e)){
+    public int[] finalVertices(int e) throws ArestaNaoEncontradaExcecao {
+        if (!arestas.containsKey(e)) {
             throw new ArestaNaoEncontradaExcecao("Aresta não encontrada no grafo!");
         }
         Aresta aresta = arestas.get(e);
@@ -24,29 +25,27 @@ public class Grafo implements IGrafo {
     }
 
     @Override
-    public int oposto(Vertice v, int e) throws ArestaNaoEncontradaExcecao, VerticeNaoEncontradoExcecao{
-        if(!arestas.containsKey(e)){
+    public int oposto(Vertice v, int e) throws ArestaNaoEncontradaExcecao, VerticeNaoEncontradoExcecao {
+        if (!arestas.containsKey(e)) {
             throw new ArestaNaoEncontradaExcecao("Aresta não encontrada no grafo!");
         }
         Aresta aresta = arestas.get(e);
-        if(aresta.v1() == v.getId()){
+        if (aresta.v1() == v.getId()) {
             return aresta.v2();
-        }
-        else if(aresta.v2() == v.getId()) {
+        } else if (aresta.v2() == v.getId()) {
             return aresta.v1();
-        }
-        else{
+        } else {
             throw new VerticeNaoEncontradoExcecao("Vértice não encontrado na aresta!");
         }
     }
 
     @Override
     public boolean ehAdjacente(int v, int w) {
-        if(!adjList.containsKey(v)){
+        if (!adjList.containsKey(v)) {
             return false;
         }
-        for(Aresta aresta : adjList.get(v)){
-            if((aresta.v1() == v && aresta.v2() == w || (aresta.v1() == w && aresta.v2() == v))){
+        for (Aresta aresta : adjList.get(v)) {
+            if (aresta.v1() == v && aresta.v2() == w || aresta.v1() == w && aresta.v2() == v) {
                 return true;
             }
         }
@@ -55,16 +54,15 @@ public class Grafo implements IGrafo {
 
     @Override
     public void substituir(Vertice v, Object x) throws VerticeNaoEncontradoExcecao {
-        if(!vertices.containsKey(v.getId())){
+        if (!vertices.containsKey(v.getId())) {
             throw new VerticeNaoEncontradoExcecao("Vértice não encontrado no grafo!");
         }
         v.setValor(x);
-
     }
 
     @Override
     public void substituirAresta(Aresta e, Object x) throws ArestaNaoEncontradaExcecao {
-        if(!arestas.containsKey(e.getId())){
+        if (!arestas.containsKey(e.getId())) {
             throw new ArestaNaoEncontradaExcecao("Aresta não encontrada no grafo!");
         }
         e.setValor(x);
@@ -72,7 +70,7 @@ public class Grafo implements IGrafo {
 
     @Override
     public int inserirVertice(Object o) {
-        Vertice vertice =  new Vertice(o);
+        Vertice vertice = new Vertice(o);
         vertice.setId(proximoIdVertice);
         vertices.put(proximoIdVertice, vertice);
         adjList.put(proximoIdVertice, new ArrayList<>());
@@ -80,61 +78,92 @@ public class Grafo implements IGrafo {
     }
 
     @Override
-    public int inserirAresta(Vertice v, Vertice w, Object o) throws VerticeNaoEncontradoExcecao {
-        if(!vertices.containsValue(v) || !vertices.containsKey(w)){
+    public int inserirAresta(Vertice v, Vertice w, Object o, Boolean direcionada) throws VerticeNaoEncontradoExcecao {
+        if (!vertices.containsKey(v.getId()) || !vertices.containsKey(w.getId())) {
             throw new VerticeNaoEncontradoExcecao("Vértice não encontrado no grafo!");
         }
-        Aresta aresta = new Aresta(proximoIdAresta, v.getId(), w.getId(), o);
+        Aresta aresta = new Aresta(proximoIdAresta, v.getId(), w.getId(), o, direcionada);
         arestas.put(proximoIdAresta, aresta);
-        adjList.get(v).add(aresta);
-        adjList.get(w).add(aresta);
+        adjList.get(v.getId()).add(aresta);
+
+        if (!direcionada) {
+            adjList.get(w.getId()).add(aresta);
+        }
         return proximoIdAresta++;
     }
 
     @Override
     public Object removerVertice(Vertice v) throws VerticeNaoEncontradoExcecao {
-        if(!vertices.containsKey(v.getId())){
+        if (!vertices.containsKey(v.getId())) {
             throw new VerticeNaoEncontradoExcecao("Vértice não encontrado no grafo!");
         }
-        for(Aresta aresta : new ArrayList<>(adjList.get(v))){
+        List<Aresta> arestasParaRemover = new ArrayList<>(adjList.get(v.getId()));
+        for (Aresta aresta : arestasParaRemover) {
             removerAresta(aresta);
         }
         vertices.remove(v.getId());
-        adjList.remove(v);
+        adjList.remove(v.getId()); // Remover pelo ID do vértice
         return v.getValor();
     }
 
     @Override
     public Object removerAresta(Aresta e) throws ArestaNaoEncontradaExcecao {
-        if(!arestas.containsKey(e.getId())){
+        if (!arestas.containsKey(e.getId())) {
             throw new ArestaNaoEncontradaExcecao("Aresta não encontrada no grafo!");
         }
-
-
+        arestas.remove(e.getId());
+        Vertice v1 = vertices.get(e.v1());
+        Vertice v2 = vertices.get(e.v2());
+        adjList.get(v1.getId()).remove(e);
+        if (!e.isDirecionada()) {
+            adjList.get(v2.getId()).remove(e);
+        }
+        return e.getValor();
     }
 
     @Override
-    public Object arestasIncidentes(int v) {
-        return null;
+    public List<Aresta> arestasIncidentes(Vertice v) {
+        if (!vertices.containsKey(v.getId())) {
+            throw new VerticeNaoEncontradoExcecao("Vértice não encontrado no grafo!");
+        }
+        return new ArrayList<>(adjList.get(v.getId())); // Corrigido para usar o ID do vértice
     }
 
     @Override
     public Vector<Vertice> vertices() {
-        return null;
+        return new Vector<>(vertices.values());
     }
 
     @Override
     public Vector<Vector<List<Aresta>>> arestas() {
-        return null;
+        Vector<Vector<List<Aresta>>> matrizAdj = new Vector<>();
+        for (int i = 0; i < vertices.size(); i++) {
+            matrizAdj.add(new Vector<>());
+            for (int j = 0; j < vertices.size(); j++) {
+                matrizAdj.get(i).add(new ArrayList<>());
+            }
+        }
+        for (Aresta aresta : arestas.values()) {
+            int v1 = aresta.v1();
+            int v2 = aresta.v2();
+            matrizAdj.get(v1).get(v2).add(aresta);
+            if (!aresta.isDirecionada()) {
+                matrizAdj.get(v2).get(v1).add(aresta);
+            }
+        }
+        return matrizAdj;
     }
 
     @Override
-    public boolean ehDirecionado(int e) {
-        return false;
+    public boolean ehDirecionado(Aresta e) throws ArestaNaoEncontradaExcecao {
+        if (!arestas.containsKey(e.getId())) {
+            throw new ArestaNaoEncontradaExcecao("Aresta não encontrada no grafo!");
+        }
+        return e.isDirecionada();
     }
 
     @Override
-    public void inserirArestaDirecionada(int v, int w, Object o) {
-
+    public void inserirArestaDirecionada(Vertice v, Vertice w, Object o) throws VerticeNaoEncontradoExcecao {
+        inserirAresta(v, w, o, true);
     }
 }

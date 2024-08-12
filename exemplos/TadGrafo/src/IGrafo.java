@@ -48,7 +48,7 @@ public interface IGrafo {
      * @param o elemento
      * @return aresta
      */
-    public int inserirAresta(Vertice v, Vertice w, Object o);
+    public int inserirAresta(Vertice v, Vertice w, Object o, Boolean direcionada);
 
     /**
      * Remove o vértice v e todas as arestas incidentes e retorna o elemento
@@ -67,7 +67,7 @@ public interface IGrafo {
      * @param v vértice
      * @return coleção de arestas incidentes
      */
-    public Object arestasIncidentes(int v);
+    public Object arestasIncidentes(Vertice v);
     /**
      * Retorna uma coleção de todos os vértices no grafo
      * @return coleção de vértices
@@ -83,12 +83,12 @@ public interface IGrafo {
      * @param e aresta
      * @return verdadeiro se a aresta é direcionada
      */
-    public boolean ehDirecionado(int e);
+    public boolean ehDirecionado(Aresta e);
     /**
      * Insere uma nova aresta dirigida com origem em v, destino em w e armazenando o elemento o
      * @param v vértice
      * @param w vértice
      * @param o elemento
      */
-    public void inserirArestaDirecionada(int v, int w, Object o);
+    public void inserirArestaDirecionada(Vertice v, Vertice w, Object o);
 }
