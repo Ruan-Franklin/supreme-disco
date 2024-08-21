@@ -102,7 +102,7 @@ public class Grafo implements IGrafo {
             removerAresta(aresta);
         }
         vertices.remove(v.getId());
-        adjList.remove(v.getId()); // Remover pelo ID do vértice
+        adjList.remove(v.getId());
         return v.getValor();
     }
 
@@ -126,12 +126,16 @@ public class Grafo implements IGrafo {
         if (!vertices.containsKey(v.getId())) {
             throw new VerticeNaoEncontradoExcecao("Vértice não encontrado no grafo!");
         }
-        return new ArrayList<>(adjList.get(v.getId())); // Corrigido para usar o ID do vértice
+        return new ArrayList<>(adjList.get(v.getId()));
     }
 
     @Override
-    public Vector<Vertice> vertices() {
-        return new Vector<>(vertices.values());
+    public Vertice vertices(int id) throws VerticeNaoEncontradoExcecao{
+        if(!vertices.containsKey(id)){
+            throw new VerticeNaoEncontradoExcecao("Vértice não encontrado no grafo!");
+        }
+        return vertices.get(id);
+
     }
 
     @Override
@@ -160,6 +164,16 @@ public class Grafo implements IGrafo {
             throw new ArestaNaoEncontradaExcecao("Aresta não encontrada no grafo!");
         }
         return e.isDirecionada();
+    }
+    public void mostrarGrafo(){
+        System.out.println("Vertices:");
+        for(Vertice v: vertices.values()){
+            System.out.println("Id do vértice: " + v.getId() + " Valor do vertice:" + v.getValor());
+        }
+        System.out.println("\nArestas:");
+        for(Aresta e: arestas.values()){
+            System.out.println("Aresta id: " + e.getId() + " Vértice 1: " + e.v1() + " Vértice 2: " + e.v2() + " valor: " +e.getValor() + " É direcionada? " + e.isDirecionada());
+        }
     }
 
     @Override

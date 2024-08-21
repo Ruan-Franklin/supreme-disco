@@ -72,7 +72,7 @@ public interface IGrafo {
      * Retorna uma coleção de todos os vértices no grafo
      * @return coleção de vértices
      */
-    public Vector <Vertice> vertices();
+    public Vertice vertices(int id);
     /**
      * Retorna uma coleção de todas as arestas no grafo
      * @return coleção de arestas
