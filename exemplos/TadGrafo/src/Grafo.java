@@ -157,7 +157,9 @@ public class Grafo implements IGrafo {
         }
         return matrizAdj;
     }
-
+    public Map<Integer, Vertice> getVertices(){
+        return vertices;
+    }
     @Override
     public boolean ehDirecionado(Aresta e) throws ArestaNaoEncontradaExcecao {
         if (!arestas.containsKey(e.getId())) {
