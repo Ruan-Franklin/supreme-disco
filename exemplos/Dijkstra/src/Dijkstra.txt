@@ -1,0 +1,12 @@
+S=[v0]; D[v0] =0;
+para cada v pertencente a V {v0}
+D[v] = L(v0, v);
+Enquanto S <> V
+  escolha o vértice w pertence v-s tal que D[w] seja minimo
+  E congele o antecessor
+  coloque w em S, isto é, faça S=S U {w}
+  para cada v pertencente V-S faca{
+    D[v]=min(D[v], d[w] + L(w,v))
+    se(d[w] + L(w, v) < d[v])
+    d[v].antecessor = w;
+
