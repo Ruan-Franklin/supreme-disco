@@ -127,4 +127,52 @@ public class ABP {
         tamanho--;
         return removido;
     }
+
+    public int altura(No no){
+        if(ehExterno(no)){
+            return 0;
+        }
+        int altura = 0;
+        if(no.temFilhoEsquerdo()){
+            altura = Math.max(altura, altura(no.getFilhoEsquerdo()));
+        }
+        if(no.temFilhoDireito()){
+            altura = Math.max(altura, altura(no.getFilhoDireito()));
+        }
+        return altura + 1;
+    }
+    public int profundidade(No no){
+        if(ehRaiz(no)){
+            return 0;
+        }
+        return 1 + profundidade(no.getPai());
+    }
+    public void emOrdem(No no, No matriz[][]){
+        if(no.temFilhoEsquerdo()){
+            emOrdem(no.getFilhoEsquerdo(), matriz);
+        }
+        matriz[profundidade(no)][contador++] = no;
+        if(no.temFilhoDireito()){
+            emOrdem(no.getFilhoDireito(), matriz);
+        }
+    }
+
+    public void mostrarArvore(){
+        No matriz [][] = new No [altura(raiz) + 1] [getTamanho()];
+        contador = 0;
+        emOrdem(raiz, matriz);
+        for(int i = 0; i < altura(raiz) + 1; i++){
+            for (int j = 0; j < tamanho; j++){
+                if(matriz[i][j] == null){
+                    System.out.print("\t");
+                } else {
+                    System.out.printf("\t" + (matriz[i][j]).getElemento() + "[%d]",(matriz[i][j]).getFatorBalanceamento());
+                }
+            }
+            System.out.print("\n");
+        }
+        System.out.println("Tamanho: " + getTamanho());
+    }
 }
+
+

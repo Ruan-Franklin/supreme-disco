@@ -9,7 +9,7 @@ public class Main {
         System.out.println(arvore.getRaiz().getFilhoEsquerdo().getFilhoEsquerdo().getElemento());
         arvore.remover(3);
         arvore.remover(15);
-        System.out.println(arvore.getRaiz().getFilhoDireito()).getElemento();
+        arvore.mostrarArvore();
 
 
     }
