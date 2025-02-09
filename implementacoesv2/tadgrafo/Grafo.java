@@ -1,17 +1,18 @@
 import java.util.*;
-public class Grafo<TipoVertice,TipoAresta> implements IGrafo<TipoVertice, TipoAresta>{
+public class Grafo<TipoVertice, TipoAresta> implements IGrafo<TipoVertice, TipoAresta> {
+
   private Map<TipoVertice, Set<Aresta<TipoVertice, TipoAresta>>> adjacencias;
   
   public Grafo(){
      this.adjacencias = new HashMap<>();
      }
   @Override
-  public TipoVertice[] finalVertices(Aresta<TipoVertice, TipoAresta> aresta){
-    return aresta.getVertices();
+  public Object[] finalVertices(Aresta<TipoVertice, TipoAresta> aresta){
+    return new Object[]{aresta.getVertice1(), aresta.getVertice2()};
    }
    
   @Override
-  public tipoVertice oposto(TipoVertice vertice, Aresta<TipoVertice, tipoAresta> aresta) throws VerticeInvalidoExcecao{
+  public TipoVertice oposto(TipoVertice vertice, Aresta<TipoVertice, TipoAresta> aresta) throws VerticeInvalidoExcecao{
     if(aresta.getVertice1().equals(vertice)){
       return aresta.getVertice2();
     }
@@ -23,7 +24,7 @@ public class Grafo<TipoVertice,TipoAresta> implements IGrafo<TipoVertice, TipoAr
    
   @Override
   public boolean ehAdjacente(TipoVertice vertice1, TipoVertice vertice2) throws VerticeInvalidoExcecao{
-    if(!adjacencias.containsKey(vertice)){
+    if(!adjacencias.containsKey(vertice1)){
       return false;
       }
     for(Aresta<TipoVertice, TipoAresta> aresta: adjacencias.get(vertice1)){
@@ -50,22 +51,24 @@ public class Grafo<TipoVertice,TipoAresta> implements IGrafo<TipoVertice, TipoAr
     aresta.setElemento(novoElemento);
   }
   @Override
-  public void TipoVertice inserirVertice(TipoVertice vertice){
+  public  TipoVertice inserirVertice(TipoVertice vertice){
     adjacencias.putIfAbsent(vertice, new HashSet<>());
     return vertice;
    }
   @Override
-  public Aresta<TipoVertice, TipoAresta> inserirAresta(TipoVertice, vertice1, TipoVertice vertice2, elemento) throws VerticeInvalidoExcecao{
-    if(!adjacencias.containsKey(vertice1) || !adjacencias.containsKey(vertice2){
+  public Aresta<TipoVertice, TipoAresta> inserirAresta(TipoVertice vertice1, TipoVertice vertice2, TipoAresta elemento) throws VerticeInvalidoExcecao{
+    if(!adjacencias.containsKey(vertice1) || !adjacencias.containsKey(vertice2)){
       throw new VerticeInvalidoExcecao("Algum dos vértices passados não existe");
     }
     Aresta<TipoVertice, TipoAresta> aresta = new Aresta<>(vertice1, vertice2, elemento);
     adjacencias.get(vertice1).add(aresta);
     adjacencias.get(vertice2).add(aresta);
+    return aresta;
     }
-  @Override
-  public TIpoVertice removerVertice(TipoVertice vertice) throws VerticeInvalidoExcecao{
-    if(!adjacencias.containsKey(vertice){
+    
+
+  public TipoVertice removerVertice(TipoVertice vertice) throws VerticeInvalidoExcecao{
+    if(!adjacencias.containsKey(vertice)){
       throw new VerticeInvalidoExcecao("Vértice inexistente, não é possível remover");
       }
     for(Aresta<TipoVertice, TipoAresta> aresta : adjacencias.get(vertice)){
@@ -76,17 +79,17 @@ public class Grafo<TipoVertice,TipoAresta> implements IGrafo<TipoVertice, TipoAr
     return vertice;
     }
   @Override
-  public TipoAresta removeAresta(Aresta<TipoVertice, TipoAresta aresta> aresta) throws ArestaInvalidaExcecao{
-    if(!adjacencias.containsKey(aresta.getVertice(1)){
+  public TipoAresta removeAresta(Aresta<TipoVertice, TipoAresta> aresta) throws ArestaInvalidaExcecao{
+    if(!adjacencias.containsKey(aresta.getVertice1()) || !adjacencias.containsKey(aresta.getVertice2())){
       throw new ArestaInvalidaExcecao("Aresta não existe no Grafo");
       }
-    adjacencias.get(aresta.getVertice1().remove(aresta);
-    adjacencias.get(aresta.getVertice2().remove(aresta);
+    adjacencias.get(aresta.getVertice1()).remove(aresta);
+    adjacencias.get(aresta.getVertice2()).remove(aresta);
     return aresta.getElemento();
    }
-  @Override
+
   public Set<Aresta<TipoVertice, TipoAresta>> arestasIncidentes(TipoVertice vertice){
-    return adjacencias.getORDefault(vertice, Collections.emptySet());
+    return adjacencias.getOrDefault(vertice, Collections.emptySet());
   }
   
   @Override
@@ -96,7 +99,7 @@ public class Grafo<TipoVertice,TipoAresta> implements IGrafo<TipoVertice, TipoAr
   @Override
   public Set<Aresta<TipoVertice, TipoAresta>> arestas(){
     Set<Aresta<TipoVertice, TipoAresta>> todasArestas = new HashSet<>();
-    for(Set<Aresta<TipoVertice, TipoAresta> arestas : adjacencias.values()){
+    for(Set<Aresta<TipoVertice, TipoAresta>> arestas : adjacencias.values()){
       todasArestas.addAll(arestas);
       }
     return todasArestas;

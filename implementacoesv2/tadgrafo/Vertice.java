@@ -18,7 +18,7 @@ public class Vertice<TipoElemento>{
      return this.elemento;
        }
        
-   public String ToString(){
+   public String toString(){
      return elemento.toString();
      }
      

@@ -5,7 +5,7 @@ public interface IGrafo<TipoVertice, TipoAresta>{
      * @param aresta a aresta cujo os vértices finais devem ser retornados
      * @return um array contendo os dois vértices finais de uma aresta
      */
-     public TipoVertice[] finalVertices(Aresta<TipoVertice, TipoAresta> aresta);
+     public Object[] finalVertices(Aresta<TipoVertice, TipoAresta> aresta);
      
      /**
      
@@ -25,7 +25,7 @@ public interface IGrafo<TipoVertice, TipoAresta>{
        * @return true se forem adjacentes, false caso o contrário
       */
       
-      public boolean ehAdjacente(TipoVertice vertice1, TipoVertice vertice2);
+      public boolean ehAdjacente(TipoVertice vertice1, TipoVertice vertice2) throws VerticeInvalidoExcecao;
      /**
       *Substitui um vértice no grafo por outro
       *@param vertice o vértice a ser substituido
