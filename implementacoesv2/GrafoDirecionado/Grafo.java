@@ -82,6 +82,13 @@ public class Grafo<TipoVertice, TipoAresta> implements IGrafo<TipoVertice, TipoA
     adjacencias.remove(vertice);
     return vertice;
    }
+   
+   public boolean ehDirecionado(){
+     if(this.direcionado == true){
+       return true;
+      }
+     return false;
+     }
   @Override
   public TipoAresta removeAresta(Aresta<TipoVertice, TipoAresta> aresta) throws ArestaInvalidaExcecao{
     if(!adjacencias.containsKey(aresta.getVertice1()) || !adjacencias.containsKey(aresta.getVertice2())){
